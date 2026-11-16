@@ -9,8 +9,7 @@
     RewriteRule ^\.env - [F,L,NC]
 
     # 2. If already requesting public/, do nothing
-    RewriteCond %{REQUEST_URI} ^/public/ [NC]
-    RewriteRule ^ - [L]
+    RewriteRule ^public(/|$) - [L]
 
     # 3. Route check.php directly if present in public/
     RewriteRule ^check\.php$ public/check.php [L,QSA]
