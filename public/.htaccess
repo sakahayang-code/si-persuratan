@@ -1,10 +1,10 @@
 # SI-PERSURATAN - Public Directory Configuration
-DirectoryIndex index.html index.php
+DirectoryIndex index.php index.html
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
-    RewriteRule ^(.*)$ index.html [L,QSA]
+    RewriteRule ^(.*)$ index.php [L,QSA]
 </IfModule>

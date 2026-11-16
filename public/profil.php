@@ -11,7 +11,7 @@ $pageTitle = 'Profil Pengguna';
 $user = Auth::user();
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Token tidak valid.';
     }

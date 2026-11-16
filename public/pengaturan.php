@@ -10,7 +10,7 @@ if (!Auth::check() || !Auth::hasRole('superadmin')) {
 
 $pageTitle = 'Pengaturan Identitas & Sistem';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
         Flash::set('danger', 'Token CSRF tidak valid.');
     } else {

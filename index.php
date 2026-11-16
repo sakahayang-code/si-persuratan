@@ -1,12 +1,11 @@
 <?php
-// SI-PERSURATAN - Sistem Informasi Persuratan Digital & Arsip Terintegrasi
-// Serve index.html directly if available
+// persuratan/index.php
+// Main entry point - forwards to public/
 
-if (file_exists(__DIR__ . '/index.html')) {
-    header('Content-Type: text/html; charset=UTF-8');
-    readfile(__DIR__ . '/index.html');
-    exit;
-}
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$dir = dirname($scriptName);
+$dir = str_replace('\\', '/', $dir);
+$baseUrl = ($dir === '/' || $dir === '.' || empty($dir)) ? '' : rtrim($dir, '/');
 
-header('Location: index.html');
+header('Location: ' . $baseUrl . '/public/');
 exit;

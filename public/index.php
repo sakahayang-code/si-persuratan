@@ -1,18 +1,11 @@
 <?php
-// SI-PERSURATAN - Public Entry Point
-// Serve index.html directly if available
+// persuratan/public/index.php
 
-if (file_exists(__DIR__ . '/index.html')) {
-    header('Content-Type: text/html; charset=UTF-8');
-    readfile(__DIR__ . '/index.html');
-    exit;
+require_once __DIR__ . '/../config/app.php';
+
+if (Auth::check()) {
+    header('Location: ' . url('dashboard.php'));
+} else {
+    header('Location: ' . url('login.php'));
 }
-
-if (file_exists(__DIR__ . '/../index.html')) {
-    header('Content-Type: text/html; charset=UTF-8');
-    readfile(__DIR__ . '/../index.html');
-    exit;
-}
-
-header('Location: index.html');
 exit;
