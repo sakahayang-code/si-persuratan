@@ -109,7 +109,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                 <h6 class="fw-bold m-0">Pratinjau Kop Surat Resmi</h6>
             </div>
             <div class="card-body p-4 text-center">
-                <img src="<?= url('assets/img/logo-instansi.svg') ?>" width="56" height="56" class="mb-2">
+                <img src="<?= app_logo_data_uri() ?>" width="56" height="56" class="mb-2">
                 <div class="fw-bold text-dark" style="font-size:12px;"><?= htmlspecialchars($pengaturan['sub_instansi'] ?? '') ?></div>
                 <div class="fw-bold text-primary" style="font-size:14px; text-transform:uppercase;"><?= htmlspecialchars($pengaturan['nama_instansi'] ?? '') ?></div>
                 <div class="text-muted" style="font-size:10px; margin-top:4px;"><?= htmlspecialchars($pengaturan['alamat_instansi'] ?? '') ?></div>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Offline - SI-PERSURATAN</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #F1F5F9;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .offline-card {
+            max-width: 480px;
+            width: 100%;
+            background: #fff;
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+            border: 1px solid #E2E8F0;
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: #FEF3C7;
+            color: #D97706;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-card">
+        <div class="icon-circle">📶</div>
+        <h4 class="fw-bold text-dark mb-2">Anda Sedang Offline</h4>
+        <p class="text-muted mb-4">
+            Koneksi internet atau server lokal saat ini terputus. Anda tetap dapat mengakses halaman yang telah tersimpan di cache dan membuat draf surat baru secara lokal.
+        </p>
+        <div class="d-grid gap-2">
+            <button onclick="window.location.reload()" class="btn btn-primary py-2 fw-semibold">
+                🔄 Coba Muat Ulang Halaman
+            </button>
+            <a href="./dashboard.php" class="btn btn-outline-secondary py-2">
+                Kembali ke Dashboard Ter-Cache
+            </a>
+        </div>
+        <div class="mt-4 pt-3 border-top text-muted small">
+            SI-PERSURATAN • Dukungan Progressive Web App (PWA)
+        </div>
+    </div>
+</body>
+</html>

@@ -71,6 +71,28 @@ function redirect(string $path): void {
     exit;
 }
 
+/**
+ * Helper to get self-contained Base64 SVG Data URI for application logo
+ * Guarantees logo is never broken by HTTP routing or missing asset errors
+ */
+function app_logo_data_uri(): string {
+    static $uri = null;
+    if ($uri === null) {
+        $paths = [
+            BASE_PATH . '/assets/img/logo-instansi.svg',
+            PUBLIC_PATH . '/assets/img/logo-instansi.svg'
+        ];
+        foreach ($paths as $p) {
+            if (file_exists($p)) {
+                $uri = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents($p));
+                return $uri;
+            }
+        }
+        $uri = url('assets/img/logo-instansi.svg');
+    }
+    return $uri;
+}
+
 // Autoloader for app classes and vendor
 spl_autoload_register(function ($class) {
     $dirs = ['helpers', 'models', 'controllers'];

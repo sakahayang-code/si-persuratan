@@ -1,4 +1,4 @@
-# SI-PERSURATAN - Apache / cPanel Configuration
+# SI-PERSURATAN - Apache & LiteSpeed Configuration for cPanel
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -8,19 +8,34 @@
     RewriteRule ^\.git - [F,L,NC]
     RewriteRule ^\.env - [F,L,NC]
 
-    # 2. If already requesting public/, do nothing
+    # 2. If physical file or folder exists directly at root (e.g. /assets/...), serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # 3. If already requesting public/, do nothing
     RewriteRule ^public(/|$) - [L]
 
-    # 3. Route check.php directly if present in public/
+    # 4. Route check.php directly if present in public/
     RewriteRule ^check\.php$ public/check.php [L,QSA]
 
-    # 4. Route all other requests to public folder
+    # 5. Route all other requests to public folder
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ public/$1 [L,QSA]
 
-    # 5. Default root request to public/
+    # 6. Default root request to public/
     RewriteRule ^$ public/ [L,QSA]
+</IfModule>
+
+# Ensure accurate MIME types for static assets
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType application/javascript .js
+    AddType image/svg+xml .svg
+    AddType image/png .png
+    AddType image/x-icon .ico
+    AddType application/manifest+json .json
 </IfModule>
 
 # Security: Disable directory listing
@@ -29,9 +44,9 @@ Options -Indexes
 # UTF-8 Encoding default
 AddDefaultCharset UTF-8
 
-# PHP Upload & Memory limits (for servers supporting php_value)
-<IfModule mod_php.c>
-    php_value upload_max_filesize 32M
-    php_value post_max_size 32M
-    php_value memory_limit 256M
+# Allow cross-origin for fonts/icons/css
+<IfModule mod_headers.c>
+    <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js|svg)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
 </IfModule>

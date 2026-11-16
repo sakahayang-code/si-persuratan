@@ -18,13 +18,29 @@ $pageTitle = $pageTitle ?? 'Dashboard Persuratan';
     <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
     <title><?= htmlspecialchars($pageTitle) ?> - SI-PERSURATAN</title>
     
-    <!-- Local CSS (Works 100% Offline) -->
+    <!-- Bootstrap 5 CSS: Local + CDN Fallback -->
     <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <!-- Custom SaaS CSS: Local -->
     <link rel="stylesheet" href="<?= url('assets/css/custom.css') ?>">
+
+    <!-- Embedded Critical SaaS Layout Styles (Ensures sidebar, cards, and header ALWAYS render perfectly) -->
+    <style>
+        <?php
+        $cssFile = file_exists(BASE_PATH . '/assets/css/custom.css') ? BASE_PATH . '/assets/css/custom.css' : PUBLIC_PATH . '/assets/css/custom.css';
+        if (file_exists($cssFile)) {
+            echo file_get_contents($cssFile);
+        }
+        ?>
+    </style>
     
-    <!-- Local JS Libraries -->
+    <!-- JS Libraries: Local + CDN Fallback -->
     <script src="<?= url('assets/js/chart.umd.min.js') ?>"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
     <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 

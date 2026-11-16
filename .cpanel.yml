@@ -11,3 +11,4 @@ deployment:
     - test -f /tmp/persuratan_backup.sqlite && /bin/cp -f /tmp/persuratan_backup.sqlite $DEPLOYPATH/storage/database/persuratan.sqlite && /bin/rm -f /tmp/persuratan_backup.sqlite || true
     - /bin/chmod -R 775 $DEPLOYPATH/storage $DEPLOYPATH/database
     - /bin/chmod -R 777 $DEPLOYPATH/storage/database $DEPLOYPATH/storage/sessions 2>/dev/null || true
+    - /bin/chmod -R 755 $DEPLOYPATH/assets $DEPLOYPATH/public 2>/dev/null || true

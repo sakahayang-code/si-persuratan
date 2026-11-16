@@ -21,7 +21,9 @@ $alamat = Pengaturan::get('alamat_instansi', 'Jl. Medan Merdeka Barat No. 12, Ja
     <title>Verifikasi Keaslian Dokumen - SI-PERSURATAN</title>
     <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
     <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous">
     <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             background-color: #F1F5F9;
@@ -53,7 +55,7 @@ $alamat = Pengaturan::get('alamat_instansi', 'Jl. Medan Merdeka Barat No. 12, Ja
 
 <div class="verif-card">
     <div class="verif-header">
-        <img src="<?= url('assets/img/logo-instansi.svg') ?>" alt="Logo" width="48" height="48" class="mb-2">
+        <img src="<?= app_logo_data_uri() ?>" alt="Logo" width="48" height="48" class="mb-2">
         <h5 class="fw-bold m-0" style="letter-spacing: -0.02em;">SI-PERSURATAN</h5>
         <div class="text-secondary small">Layanan Verifikasi Keabsahan Dokumen Dinas</div>
     </div>

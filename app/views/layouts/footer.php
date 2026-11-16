@@ -17,14 +17,20 @@ if (!defined('APP_INIT')) exit;
 <!-- Mobile Bottom Navigation for Android PWA -->
 <?php require_once APP_PATH . '/views/layouts/mobile_nav.php'; ?>
 
-<!-- Bootstrap Bundle JS & Offline Sync JS -->
+<!-- Bootstrap Bundle JS & Offline Sync JS (Local + CDN Fallback) -->
 <script src="<?= url('assets/js/bootstrap.bundle.min.js') ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= url('assets/js/offline-sync.js') ?>"></script>
 <script>
-    // Initialize Lucide Icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    // Initialize Lucide Icons reliably
+    function initAppIcons() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
     }
+    initAppIcons();
+    window.addEventListener('DOMContentLoaded', initAppIcons);
+    window.addEventListener('load', initAppIcons);
 
     // Mobile Sidebar Toggle
     const sidebarToggle = document.getElementById('sidebarToggle');

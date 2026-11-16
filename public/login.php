@@ -38,8 +38,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
     <title>Login Masuk - SI-PERSURATAN</title>
     <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="<?= url('assets/css/custom.css') ?>">
     <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
             background: linear-gradient(135deg, #EFF6FF 0%, #F1F5F9 100%);
@@ -78,7 +80,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
 <div class="login-card">
     <div class="login-header">
-        <img src="<?= url('assets/img/logo-instansi.svg') ?>" alt="Logo" width="56" height="56" class="mb-2">
+        <img src="<?= app_logo_data_uri() ?>" alt="Logo" width="56" height="56" class="mb-2">
         <h3 class="fw-bold m-0" style="letter-spacing: -0.02em;">SI-PERSURATAN</h3>
         <p class="text-secondary small m-0 mt-1">Sistem Informasi Persuratan & Arsip Terintegrasi</p>
     </div>

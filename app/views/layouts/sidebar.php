@@ -10,7 +10,7 @@ function isSidebarActive(string $pattern, string $uri): string {
 <aside class="app-sidebar" id="appSidebar">
     <!-- Brand Info -->
     <div class="sidebar-brand">
-        <img src="<?= url('assets/img/logo-instansi.svg') ?>" alt="Logo" width="36" height="36" class="rounded">
+        <img src="<?= app_logo_data_uri() ?>" alt="Logo" width="36" height="36" class="rounded">
         <div>
             <h1 class="sidebar-brand-title">SI-PERSURATAN</h1>
             <p class="sidebar-brand-subtitle">Digital Archive & Mail</p>
