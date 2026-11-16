@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('surat_masuk.view')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /surat_masuk/');
-    exit;
+    redirect('surat_masuk/');
 }
 
 $id = (int)($_GET['id'] ?? 0);
@@ -14,8 +13,7 @@ $surat = SuratMasuk::findById($id);
 
 if (!$surat) {
     Flash::set('danger', 'Data surat masuk tidak ditemukan.');
-    header('Location: /surat_masuk/');
-    exit;
+    redirect('surat_masuk/');
 }
 
 $pageTitle = 'Detail Surat Masuk - ' . $surat['nomor_surat'];
@@ -29,25 +27,25 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/surat_masuk/">Surat Masuk</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('surat_masuk/') ?>">Surat Masuk</a></li>
                 <li class="breadcrumb-item active"><?= htmlspecialchars($surat['nomor_agenda']) ?></li>
             </ol>
         </nav>
         <h4 class="fw-bold m-0" style="letter-spacing: -0.02em;">Detail Surat Masuk</h4>
     </div>
     <div class="d-flex flex-wrap gap-2">
-        <a href="/surat_masuk/tanda_terima.php?id=<?= $surat['id'] ?>" target="_blank" class="btn btn-outline-primary d-flex align-items-center gap-2 bg-white rounded-3">
+        <a href="<?= url('surat_masuk/tanda_terima.php') ?>?id=<?= $surat['id'] ?>" target="_blank" class="btn btn-outline-primary d-flex align-items-center gap-2 bg-white rounded-3">
             <i data-lucide="printer" style="width: 16px;"></i>
             <span>Cetak Tanda Terima</span>
         </a>
         <?php if (Auth::can('disposisi.create')): ?>
-            <a href="/disposisi/buat.php?surat_id=<?= $surat['id'] ?>" class="btn btn-warning text-dark d-flex align-items-center gap-2 rounded-3 fw-semibold">
+            <a href="<?= url('disposisi/buat.php') ?>?surat_id=<?= $surat['id'] ?>" class="btn btn-warning text-dark d-flex align-items-center gap-2 rounded-3 fw-semibold">
                 <i data-lucide="git-pull-request" style="width: 16px;"></i>
                 <span>Buat Disposisi</span>
             </a>
         <?php endif; ?>
         <?php if (Auth::can('surat_masuk.edit')): ?>
-            <a href="/surat_masuk/edit.php?id=<?= $surat['id'] ?>" class="btn btn-light border d-flex align-items-center gap-2 rounded-3">
+            <a href="<?= url('surat_masuk/edit.php') ?>?id=<?= $surat['id'] ?>" class="btn btn-light border d-flex align-items-center gap-2 rounded-3">
                 <i data-lucide="pencil" style="width: 16px;"></i>
                 <span>Edit</span>
             </a>
@@ -117,7 +115,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 <div class="text-muted small"><?= htmlspecialchars(basename($surat['file_dokumen'])) ?></div>
                             </div>
                         </div>
-                        <a href="/dokumen_viewer.php?path=<?= urlencode($surat['file_dokumen']) ?>" target="_blank" class="btn btn-sm btn-primary">
+                        <a href="<?= url('dokumen_viewer.php') ?>?path=<?= urlencode($surat['file_dokumen']) ?>" target="_blank" class="btn btn-sm btn-primary">
                             <i data-lucide="external-link" style="width: 14px;"></i> Buka Dokumen
                         </a>
                     </div>
@@ -133,7 +131,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                     <h6 class="fw-bold m-0">Instruksi Lembar Disposisi (<?= count($disposisiList) ?>)</h6>
                 </div>
                 <?php if (Auth::can('disposisi.create')): ?>
-                    <a href="/disposisi/buat.php?surat_id=<?= $surat['id'] ?>" class="btn btn-sm btn-warning text-dark">+ Disposisi Baru</a>
+                    <a href="<?= url('disposisi/buat.php') ?>?surat_id=<?= $surat['id'] ?>" class="btn btn-sm btn-warning text-dark">+ Disposisi Baru</a>
                 <?php endif; ?>
             </div>
             <div class="card-body p-4">
@@ -239,7 +237,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Catat Tindak Lanjut -->
 <div class="modal fade" id="modalTindakLanjut" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/disposisi/tindak_lanjut.php" method="POST" class="modal-content">
+        <form action="<?= url('disposisi/tindak_lanjut.php') ?>" method="POST" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <input type="hidden" name="surat_masuk_id" value="<?= $surat['id'] ?>">
 

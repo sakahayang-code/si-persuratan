@@ -28,6 +28,6 @@ if ($user) {
     Flash::set('danger', "Peran {$roleSlug} tidak ditemukan.");
 }
 
-$redirect = $_SERVER['HTTP_REFERER'] ?? '/dashboard.php';
+$redirect = $_SERVER['HTTP_REFERER'] ?? url('dashboard.php');
 header("Location: {$redirect}");
 exit;

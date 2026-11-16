@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('master.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Aturan Penomoran Surat';
@@ -22,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([':fmt' => $format, ':id' => $id]);
         Flash::set('success', 'Aturan pola penomoran berhasil diperbarui.');
     }
-    header('Location: /master/penomoran.php');
-    exit;
+    redirect('master/penomoran.php');
 }
 
 $rules = $db->query("SELECT * FROM nomor_surat ORDER BY id ASC")->fetchAll();
@@ -100,7 +98,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Edit Pola -->
 <div class="modal fade" id="modalEditFormat" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/master/penomoran.php" method="POST" class="modal-content">
+        <form action="<?= url('master/penomoran.php') ?>" method="POST" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <input type="hidden" name="id" id="editRuleId">
 

@@ -5,8 +5,7 @@ require_once __DIR__ . '/../config/app.php';
 
 if (!Auth::check() || !Auth::hasRole('superadmin')) {
     Flash::set('danger', 'Hanya Super Administrator yang berwenang mengubah pengaturan sistem.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Pengaturan Identitas & Sistem';
@@ -29,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         Flash::set('success', 'Konfigurasi identitas instansi dan sistem berhasil diperbarui.');
     }
-    header('Location: /pengaturan.php');
-    exit;
+    redirect('pengaturan.php');
 }
 
 $pengaturan = Pengaturan::getAll();
@@ -48,7 +46,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="col-12 col-lg-8">
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-4">
-                <form action="/pengaturan.php" method="POST">
+                <form action="<?= url('pengaturan.php') ?>" method="POST">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
                     <h6 class="fw-bold text-primary mb-3">1. Identitas Resmi Instansi (Kop Surat)</h6>
@@ -111,7 +109,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                 <h6 class="fw-bold m-0">Pratinjau Kop Surat Resmi</h6>
             </div>
             <div class="card-body p-4 text-center">
-                <img src="/assets/img/logo-instansi.svg" width="56" height="56" class="mb-2">
+                <img src="<?= url('assets/img/logo-instansi.svg') ?>" width="56" height="56" class="mb-2">
                 <div class="fw-bold text-dark" style="font-size:12px;"><?= htmlspecialchars($pengaturan['sub_instansi'] ?? '') ?></div>
                 <div class="fw-bold text-primary" style="font-size:14px; text-transform:uppercase;"><?= htmlspecialchars($pengaturan['nama_instansi'] ?? '') ?></div>
                 <div class="text-muted" style="font-size:10px; margin-top:4px;"><?= htmlspecialchars($pengaturan['alamat_instansi'] ?? '') ?></div>

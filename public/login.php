@@ -5,12 +5,11 @@ require_once __DIR__ . '/../config/app.php';
 
 // Redirect if already logged in
 if (Auth::check()) {
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     $csrf = $_POST['csrf_token'] ?? '';
@@ -22,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (Auth::login($username, $password)) {
             Flash::set('success', 'Selamat datang kembali, ' . htmlspecialchars(Auth::user()['full_name']));
-            header('Location: /dashboard.php');
-            exit;
+            redirect('dashboard.php');
         } else {
             $error = 'Username/email atau password yang Anda masukkan salah.';
         }
@@ -36,12 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2563EB">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="manifest" href="<?= url('manifest.json') ?>">
+    <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
     <title>Login Masuk - SI-PERSURATAN</title>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/custom.css">
-    <script src="/assets/js/lucide.min.js"></script>
+    <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= url('assets/css/custom.css') ?>">
+    <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
     <style>
         body {
             background: linear-gradient(135deg, #EFF6FF 0%, #F1F5F9 100%);
@@ -80,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="login-card">
     <div class="login-header">
-        <img src="/assets/img/logo-instansi.svg" alt="Logo" width="56" height="56" class="mb-2">
+        <img src="<?= url('assets/img/logo-instansi.svg') ?>" alt="Logo" width="56" height="56" class="mb-2">
         <h3 class="fw-bold m-0" style="letter-spacing: -0.02em;">SI-PERSURATAN</h3>
         <p class="text-secondary small m-0 mt-1">Sistem Informasi Persuratan & Arsip Terintegrasi</p>
     </div>
@@ -93,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <form action="/login.php" method="POST" id="loginForm">
+        <form action="<?= url('login.php') ?>" method="POST" id="loginForm">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="mb-3">

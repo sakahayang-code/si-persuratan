@@ -2,19 +2,19 @@
 const CACHE_NAME = 'si-persuratan-v1.0.0';
 
 const STATIC_ASSETS = [
-    '/',
-    '/dashboard.php',
-    '/offline.html',
-    '/assets/css/bootstrap.min.css',
-    '/assets/css/custom.css',
-    '/assets/js/bootstrap.bundle.min.js',
-    '/assets/js/chart.umd.min.js',
-    '/assets/js/lucide.min.js',
-    '/assets/js/offline-sync.js',
-    '/assets/img/icon-192.png',
-    '/assets/img/icon-512.png',
-    '/assets/img/logo-instansi.svg',
-    '/manifest.json'
+    './',
+    './dashboard.php',
+    './offline.html',
+    './assets/css/bootstrap.min.css',
+    './assets/css/custom.css',
+    './assets/js/bootstrap.bundle.min.js',
+    './assets/js/chart.umd.min.js',
+    './assets/js/lucide.min.js',
+    './assets/js/offline-sync.js',
+    './assets/img/icon-192.png',
+    './assets/img/icon-512.png',
+    './assets/img/logo-instansi.svg',
+    './manifest.json'
 ];
 
 // 1. Install event: pre-cache static assets
@@ -68,7 +68,7 @@ self.addEventListener('fetch', (event) => {
                 })
                 .catch(() => {
                     return caches.match(request).then((cachedResponse) => {
-                        return cachedResponse || caches.match('/offline.html');
+                        return cachedResponse || caches.match('./offline.html');
                     });
                 })
         );

@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || (!Auth::can('template.manage') && !Auth::can('surat_keluar.create'))) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Generator Surat Otomatis';
@@ -21,7 +20,7 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Pilih salah satu dari 16 template surat dinas terstandarisasi untuk membuat dokumen dalam hitungan menit.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/surat_keluar/" class="btn btn-outline-secondary d-flex align-items-center gap-2 bg-white rounded-3">
+        <a href="<?= url('surat_keluar/') ?>" class="btn btn-outline-secondary d-flex align-items-center gap-2 bg-white rounded-3">
             <i data-lucide="send" style="width: 16px;"></i>
             <span>Daftar Surat Keluar</span>
         </a>
@@ -46,7 +45,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                         <code class="text-secondary"><?= htmlspecialchars($t['format_nomor'] ?? '{nomor}/{kode}/BPTI/{tahun}') ?></code>
                     </p>
 
-                    <a href="/generator/buat.php?id=<?= $t['id'] ?>" class="btn btn-outline-primary w-100 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-2 mt-auto">
+                    <a href="<?= url('generator/buat.php') ?>?id=<?= $t['id'] ?>" class="btn btn-outline-primary w-100 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-2 mt-auto">
                         <i data-lucide="edit" style="width: 16px;"></i>
                         <span>Gunakan Template</span>
                     </a>

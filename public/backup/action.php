@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('backup.manage')) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $act = $_GET['act'] ?? '';
@@ -13,8 +12,7 @@ $csrf = $_GET['csrf'] ?? ($_POST['csrf_token'] ?? '');
 
 if (!Auth::verifyCsrf($csrf)) {
     Flash::set('danger', 'Token CSRF tidak valid.');
-    header('Location: /backup/');
-    exit;
+    redirect('backup/');
 }
 
 $db = Database::getInstance();
@@ -63,5 +61,4 @@ try {
     Flash::set('danger', 'Kesalahan proses backup/restore: ' . $e->getMessage());
 }
 
-header('Location: /backup/');
-exit;
+redirect('backup/');

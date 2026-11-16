@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('agenda.view')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Buku Agenda Surat';
@@ -30,11 +29,11 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Catatan kronologis resmi penomoran agenda surat masuk dan keluar.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/agenda/export.php?jenis=<?= $jenis ?>&format=excel&search=<?= urlencode($filters['search']) ?>&date_from=<?= $filters['date_from'] ?>&date_to=<?= $filters['date_to'] ?>" class="btn btn-outline-success d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
+        <a href="<?= url('agenda/export.php') ?>?jenis=<?= $jenis ?>&format=excel&search=<?= urlencode($filters['search']) ?>&date_from=<?= $filters['date_from'] ?>&date_to=<?= $filters['date_to'] ?>" class="btn btn-outline-success d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
             <i data-lucide="sheet" style="width: 16px;"></i>
             <span>Ekspor Excel</span>
         </a>
-        <a href="/agenda/export.php?jenis=<?= $jenis ?>&format=pdf&search=<?= urlencode($filters['search']) ?>&date_from=<?= $filters['date_from'] ?>&date_to=<?= $filters['date_to'] ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
+        <a href="<?= url('agenda/export.php') ?>?jenis=<?= $jenis ?>&format=pdf&search=<?= urlencode($filters['search']) ?>&date_from=<?= $filters['date_from'] ?>&date_to=<?= $filters['date_to'] ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
             <i data-lucide="file-down" style="width: 16px;"></i>
             <span>Cetak / PDF</span>
         </a>
@@ -44,12 +43,12 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Tabs Navigation -->
 <ul class="nav nav-pills mb-4 bg-white p-2 rounded-3 shadow-sm border" style="width: fit-content;">
     <li class="nav-item">
-        <a class="nav-link fw-semibold px-4 <?= $jenis === 'masuk' ? 'active' : '' ?>" href="/agenda/?jenis=masuk">
+        <a class="nav-link fw-semibold px-4 <?= $jenis === 'masuk' ? 'active' : '' ?>" href="<?= url('agenda/') ?>?jenis=masuk">
             📥 Agenda Surat Masuk
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link fw-semibold px-4 <?= $jenis === 'keluar' ? 'active' : '' ?>" href="/agenda/?jenis=keluar">
+        <a class="nav-link fw-semibold px-4 <?= $jenis === 'keluar' ? 'active' : '' ?>" href="<?= url('agenda/') ?>?jenis=keluar">
             📤 Agenda Surat Keluar
         </a>
     </li>
@@ -58,7 +57,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Filter Card -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/agenda/" method="GET" class="row g-2 align-items-end">
+        <form action="<?= url('agenda/') ?>" method="GET" class="row g-2 align-items-end">
             <input type="hidden" name="jenis" value="<?= htmlspecialchars($jenis) ?>">
 
             <div class="col-12 col-md-5">
@@ -81,7 +80,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
             <div class="col-12 col-md-1 d-flex gap-1">
                 <button type="submit" class="btn btn-primary w-100"><i data-lucide="filter" style="width:16px;"></i></button>
-                <a href="/agenda/?jenis=<?= $jenis ?>" class="btn btn-light border"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
+                <a href="<?= url('agenda/') ?>?jenis=<?= $jenis ?>" class="btn btn-light border"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
             </div>
         </form>
     </div>
@@ -141,11 +140,11 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </td>
                                 <td class="text-center">
                                     <?php if ($jenis === 'masuk'): ?>
-                                        <a href="/surat_masuk/detail.php?id=<?= $ag['referensi_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat Masuk">
+                                        <a href="<?= url('surat_masuk/detail.php') ?>?id=<?= $ag['referensi_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat Masuk">
                                             <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
                                         </a>
                                     <?php else: ?>
-                                        <a href="/surat_keluar/preview.php?id=<?= $ag['referensi_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat Keluar">
+                                        <a href="<?= url('surat_keluar/preview.php') ?>?id=<?= $ag['referensi_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat Keluar">
                                             <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
                                         </a>
                                     <?php endif; ?>

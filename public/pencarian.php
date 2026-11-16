@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $query = trim($_GET['q'] ?? '');
@@ -34,7 +33,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Search Input -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/pencarian.php" method="GET">
+        <form action="<?= url('pencarian.php') ?>" method="GET">
             <div class="input-group">
                 <span class="input-group-text bg-light text-muted"><i data-lucide="search" style="width: 16px;"></i></span>
                 <input type="text" name="q" class="form-control" placeholder="Cari nomor surat, perihal, pengirim, arsip..." value="<?= htmlspecialchars($query) ?>" autofocus>
@@ -54,7 +53,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="card border-0 shadow-sm rounded-3 mb-4">
         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
             <h6 class="fw-bold m-0">Surat Masuk Terkait (<?= count($suratMasukResults) ?>)</h6>
-            <a href="/surat_masuk/?search=<?= urlencode($query) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
+            <a href="<?= url('surat_masuk/?search=' . urlencode($query)) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
         </div>
         <div class="card-body p-0">
             <?php if (empty($suratMasukResults)): ?>
@@ -62,7 +61,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             <?php else: ?>
                 <div class="list-group list-group-flush">
                     <?php foreach ($suratMasukResults as $sm): ?>
-                        <a href="/surat_masuk/detail.php?id=<?= $sm['id'] ?>" class="list-group-item list-group-item-action p-3">
+                        <a href="<?= url('surat_masuk/detail.php?id=' . $sm['id']) ?>" class="list-group-item list-group-item-action p-3">
                             <div class="d-flex justify-content-between">
                                 <span class="fw-bold text-dark"><?= htmlspecialchars($sm['perihal']) ?></span>
                                 <span class="badge bg-light text-secondary border"><?= htmlspecialchars($sm['nomor_agenda']) ?></span>
@@ -81,7 +80,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="card border-0 shadow-sm rounded-3 mb-4">
         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
             <h6 class="fw-bold m-0">Surat Keluar Terkait (<?= count($suratKeluarResults) ?>)</h6>
-            <a href="/surat_keluar/?search=<?= urlencode($query) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
+            <a href="<?= url('surat_keluar/?search=' . urlencode($query)) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
         </div>
         <div class="card-body p-0">
             <?php if (empty($suratKeluarResults)): ?>
@@ -89,7 +88,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             <?php else: ?>
                 <div class="list-group list-group-flush">
                     <?php foreach ($suratKeluarResults as $sk): ?>
-                        <a href="/surat_keluar/preview.php?id=<?= $sk['id'] ?>" class="list-group-item list-group-item-action p-3">
+                        <a href="<?= url('surat_keluar/preview.php?id=' . $sk['id']) ?>" class="list-group-item list-group-item-action p-3">
                             <div class="d-flex justify-content-between">
                                 <span class="fw-bold text-dark"><?= htmlspecialchars($sk['perihal']) ?></span>
                                 <span class="badge bg-light text-secondary border"><?= htmlspecialchars($sk['nomor_agenda']) ?></span>
@@ -108,7 +107,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="card border-0 shadow-sm rounded-3 mb-4">
         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
             <h6 class="fw-bold m-0">Arsip Digital Terkait (<?= count($arsipResults) ?>)</h6>
-            <a href="/arsip/?search=<?= urlencode($query) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
+            <a href="<?= url('arsip/?search=' . urlencode($query)) ?>" class="btn btn-sm btn-light text-primary">Lihat di Modul</a>
         </div>
         <div class="card-body p-0">
             <?php if (empty($arsipResults)): ?>
@@ -122,7 +121,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 <div class="text-muted small">No Dok: <?= htmlspecialchars($ar['nomor_dokumen']) ?> • Lokasi: <?= htmlspecialchars($ar['lokasi_fisik']) ?></div>
                             </div>
                             <?php if (!empty($ar['file_path'])): ?>
-                                <a href="/dokumen_viewer.php?path=<?= urlencode($ar['file_path']) ?>" target="_blank" class="btn btn-sm btn-outline-primary">Lihat Arsip</a>
+                                <a href="<?= url('dokumen_viewer.php?path=' . urlencode($ar['file_path'])) ?>" target="_blank" class="btn btn-sm btn-outline-primary">Lihat Arsip</a>
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>

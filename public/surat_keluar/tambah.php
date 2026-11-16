@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('surat_keluar.create')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /surat_keluar/');
-    exit;
+    redirect('surat_keluar/');
 }
 
 $pageTitle = 'Buat Surat Keluar Baru';
@@ -58,8 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             Flash::set('success', "Surat Keluar berhasil dibuat dengan Nomor: {$nomorSurat}");
-            header('Location: /surat_keluar/preview.php?id=' . $id);
-            exit;
+            redirect('surat_keluar/preview.php?id=' . $id);
         } catch (Throwable $e) {
             $errors[] = 'Gagal menyimpan surat: ' . $e->getMessage();
         }
@@ -73,13 +71,13 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/surat_keluar/">Surat Keluar</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('surat_keluar/') ?>">Surat Keluar</a></li>
                 <li class="breadcrumb-item active">Baru</li>
             </ol>
         </nav>
         <h4 class="fw-bold m-0">Buat Surat Keluar Mandiri</h4>
     </div>
-    <a href="/surat_keluar/" class="btn btn-outline-secondary btn-sm bg-white">Batal & Kembali</a>
+    <a href="<?= url('surat_keluar/') ?>" class="btn btn-outline-secondary btn-sm bg-white">Batal & Kembali</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -92,7 +90,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
 <div class="card border-0 shadow-sm rounded-3">
     <div class="card-body p-4">
-        <form action="/surat_keluar/tambah.php" method="POST">
+        <form action="<?= url('surat_keluar/tambah.php') ?>" method="POST">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="row g-3">
@@ -162,7 +160,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             </div>
 
             <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                <a href="/surat_keluar/" class="btn btn-light border px-4">Batal</a>
+                <a href="<?= url('surat_keluar/') ?>" class="btn btn-light border px-4">Batal</a>
                 <button type="submit" name="submit_action" value="draft" class="btn btn-outline-secondary px-3">
                     Simpan sebagai Draf
                 </button>

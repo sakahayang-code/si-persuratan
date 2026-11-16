@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('users.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Manajemen Pengguna & Peran (RBAC)';
@@ -24,8 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Flash::set('info', 'Pengguna telah dinonaktifkan (soft delete).');
         }
     }
-    header('Location: /users/');
-    exit;
+    redirect('users/');
 }
 
 $users = User::getAll();
@@ -92,7 +90,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                             </td>
                             <td class="text-center">
                                 <?php if ($u['id'] !== Auth::id()): ?>
-                                    <form action="/users/" method="POST" class="d-inline" onsubmit="return confirm('Nonaktifkan akun pengguna ini?')">
+                                    <form action="<?= url('users/') ?>" method="POST" class="d-inline" onsubmit="return confirm('Nonaktifkan akun pengguna ini?')">
                                         <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<?= $u['id'] ?>">
@@ -113,7 +111,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Tambah Pengguna -->
 <div class="modal fade" id="modalTambahUser" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/users/" method="POST" class="modal-content">
+        <form action="<?= url('users/') ?>" method="POST" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <input type="hidden" name="action" value="create">
 

@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('surat_keluar.view')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /surat_keluar/');
-    exit;
+    redirect('surat_keluar/');
 }
 
 $id = (int)($_GET['id'] ?? 0);
@@ -14,8 +13,7 @@ $surat = SuratKeluar::findById($id);
 
 if (!$surat) {
     Flash::set('danger', 'Surat keluar tidak ditemukan.');
-    header('Location: /surat_keluar/');
-    exit;
+    redirect('surat_keluar/');
 }
 
 $pageTitle = 'Preview Surat - ' . $surat['nomor_surat'];
@@ -30,7 +28,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/surat_keluar/">Surat Keluar</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('surat_keluar/') ?>">Surat Keluar</a></li>
                 <li class="breadcrumb-item active"><?= htmlspecialchars($surat['nomor_agenda']) ?></li>
             </ol>
         </nav>
@@ -52,7 +50,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
     <!-- Action Buttons -->
     <div class="d-flex flex-wrap gap-2">
-        <a href="/surat_keluar/pdf.php?id=<?= $surat['id'] ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
+        <a href="<?= url('surat_keluar/pdf.php') ?>?id=<?= $surat['id'] ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
             <i data-lucide="file-down" style="width: 16px;"></i>
             <span>Unduh PDF Resmi</span>
         </a>
@@ -62,21 +60,21 @@ require_once APP_PATH . '/views/layouts/header.php';
         </button>
 
         <?php if (Auth::can('surat_keluar.approve') && in_array($surat['status'], ['draft', 'menunggu_persetujuan'])): ?>
-            <a href="/surat_keluar/action.php?act=approve&id=<?= $surat['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-success d-flex align-items-center gap-2 shadow-sm rounded-3">
+            <a href="<?= url('surat_keluar/action.php') ?>?act=approve&id=<?= $surat['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-success d-flex align-items-center gap-2 shadow-sm rounded-3">
                 <i data-lucide="check-circle" style="width: 16px;"></i>
                 <span>Setujui Dokumen (Pimpinan)</span>
             </a>
         <?php endif; ?>
 
         <?php if (in_array($surat['status'], ['disetujui'])): ?>
-            <a href="/surat_keluar/action.php?act=publish&id=<?= $surat['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm rounded-3">
+            <a href="<?= url('surat_keluar/action.php') ?>?act=publish&id=<?= $surat['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm rounded-3">
                 <i data-lucide="send" style="width: 16px;"></i>
                 <span>Terbitkan & Arsipkan Surat</span>
             </a>
         <?php endif; ?>
 
         <?php if (!empty($surat['token_verifikasi'])): ?>
-            <a href="/verifikasi.php?doc=<?= urlencode($surat['token_verifikasi']) ?>" target="_blank" class="btn btn-outline-primary bg-white d-flex align-items-center gap-1 rounded-3">
+            <a href="<?= url('verifikasi.php') ?>?doc=<?= urlencode($surat['token_verifikasi']) ?>" target="_blank" class="btn btn-outline-primary bg-white d-flex align-items-center gap-1 rounded-3">
                 <i data-lucide="qr-code" style="width: 16px;"></i>
                 <span>Cek QR Publik</span>
             </a>

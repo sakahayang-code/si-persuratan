@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $pageTitle = 'Disposisi & Tindak Lanjut Tugas';
@@ -43,7 +42,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
     <div class="d-flex gap-2">
         <?php if (Auth::can('disposisi.create')): ?>
-            <a href="/surat_masuk/?status=diterima" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
+            <a href="<?= url('surat_masuk/') ?>?status=diterima" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
                 <i data-lucide="plus-circle" style="width: 16px;"></i>
                 <span>Beri Disposisi Surat</span>
             </a>
@@ -134,10 +133,10 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="/surat_masuk/detail.php?id=<?= $row['surat_masuk_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat & Disposisi">
+                                        <a href="<?= url('surat_masuk/detail.php') ?>?id=<?= $row['surat_masuk_id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Surat & Disposisi">
                                             <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                                         </a>
-                                        <a href="/disposisi/cetak.php?id=<?= $row['id'] ?? $row['disposisi_id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Cetak Lembar Disposisi">
+                                        <a href="<?= url('disposisi/cetak.php') ?>?id=<?= $row['id'] ?? $row['disposisi_id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Cetak Lembar Disposisi">
                                             <i data-lucide="printer" style="width: 15px; height: 15px;"></i>
                                         </a>
                                     </div>

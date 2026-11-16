@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('surat_masuk.create')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /surat_masuk/');
-    exit;
+    redirect('surat_masuk/');
 }
 
 $pageTitle = 'Registrasi Surat Masuk Baru';
@@ -72,8 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             Flash::set('success', 'Surat Masuk baru berhasil diregistrasi dengan No. Agenda: ' . ($_POST['nomor_agenda'] ?? $autoAgenda));
-            header('Location: /surat_masuk/detail.php?id=' . $id);
-            exit;
+            redirect('surat_masuk/detail.php?id=' . $id);
         } catch (Throwable $e) {
             $errors[] = 'Terjadi kesalahan saat menyimpan: ' . $e->getMessage();
         }
@@ -87,13 +85,13 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/surat_masuk/">Surat Masuk</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('surat_masuk/') ?>">Surat Masuk</a></li>
                 <li class="breadcrumb-item active">Registrasi Baru</li>
             </ol>
         </nav>
         <h4 class="fw-bold m-0" style="letter-spacing: -0.02em;">Formulir Registrasi Surat Masuk</h4>
     </div>
-    <a href="/surat_masuk/" class="btn btn-outline-secondary btn-sm bg-white">Batal & Kembali</a>
+    <a href="<?= url('surat_masuk/') ?>" class="btn btn-outline-secondary btn-sm bg-white">Batal & Kembali</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -108,7 +106,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
 <div class="card border-0 shadow-sm rounded-3">
     <div class="card-body p-4">
-        <form action="/surat_masuk/tambah.php" method="POST" enctype="multipart/form-data" id="formSuratMasuk">
+        <form action="<?= url('surat_masuk/tambah.php') ?>" method="POST" enctype="multipart/form-data" id="formSuratMasuk">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="row g-3">
@@ -200,7 +198,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             </div>
 
             <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-                <a href="/surat_masuk/" class="btn btn-light border px-4">Batal</a>
+                <a href="<?= url('surat_masuk/') ?>" class="btn btn-light border px-4">Batal</a>
                 <button type="submit" class="btn btn-primary px-4 fw-semibold d-flex align-items-center gap-2">
                     <i data-lucide="check" style="width: 18px;"></i>
                     <span>Simpan & Registrasi</span>

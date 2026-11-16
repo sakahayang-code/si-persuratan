@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('surat_keluar.view')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Manajemen Surat Keluar';
@@ -30,12 +29,12 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Kelola draft, penomoran otomatis, alur persetujuan, dan penerbitan surat dinas.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/generator/" class="btn btn-outline-primary d-flex align-items-center gap-2 bg-white rounded-3">
+        <a href="<?= url('generator/') ?>" class="btn btn-outline-primary d-flex align-items-center gap-2 bg-white rounded-3">
             <i data-lucide="file-edit" style="width: 16px;"></i>
             <span>Generator Surat (Template)</span>
         </a>
         <?php if (Auth::can('surat_keluar.create')): ?>
-            <a href="/surat_keluar/tambah.php" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
+            <a href="<?= url('surat_keluar/tambah.php') ?>" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
                 <i data-lucide="plus-circle" style="width: 16px;"></i>
                 <span>Input Surat Keluar</span>
             </a>
@@ -46,7 +45,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Filter Card -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/surat_keluar/" method="GET" class="row g-2 align-items-end">
+        <form action="<?= url('surat_keluar/') ?>" method="GET" class="row g-2 align-items-end">
             <div class="col-12 col-md-3">
                 <label class="form-label small text-secondary fw-semibold">Pencarian</label>
                 <div class="input-group">
@@ -90,7 +89,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
             <div class="col-12 col-md-1 d-flex gap-1">
                 <button type="submit" class="btn btn-primary w-100" title="Filter"><i data-lucide="filter" style="width:16px;"></i></button>
-                <a href="/surat_keluar/" class="btn btn-light border" title="Reset"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
+                <a href="<?= url('surat_keluar/') ?>" class="btn btn-light border" title="Reset"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
             </div>
         </form>
     </div>
@@ -164,14 +163,14 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="/surat_keluar/preview.php?id=<?= $sk['id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Dokumen / Persetujuan">
+                                        <a href="<?= url('surat_keluar/preview.php') ?>?id=<?= $sk['id'] ?>" class="btn btn-sm btn-light border p-1" title="Lihat Dokumen / Persetujuan">
                                             <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                                         </a>
-                                        <a href="/surat_keluar/pdf.php?id=<?= $sk['id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-danger" title="Unduh PDF Resmi">
+                                        <a href="<?= url('surat_keluar/pdf.php') ?>?id=<?= $sk['id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-danger" title="Unduh PDF Resmi">
                                             <i data-lucide="file-down" style="width: 15px; height: 15px;"></i>
                                         </a>
                                         <?php if (Auth::can('surat_keluar.approve') && in_array($sk['status'], ['draft', 'menunggu_persetujuan'])): ?>
-                                            <a href="/surat_keluar/action.php?act=approve&id=<?= $sk['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-success p-1" title="Setujui Surat" onclick="return confirm('Setujui surat keluar ini?')">
+                                            <a href="<?= url('surat_keluar/action.php') ?>?act=approve&id=<?= $sk['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-success p-1" title="Setujui Surat" onclick="return confirm('Setujui surat keluar ini?')">
                                                 <i data-lucide="check" style="width: 15px; height: 15px;"></i>
                                             </a>
                                         <?php endif; ?>

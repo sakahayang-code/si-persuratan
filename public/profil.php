@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $pageTitle = 'Profil Pengguna';
@@ -47,8 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         User::update($user['id'], $updateData);
         Flash::set('success', 'Profil Anda berhasil diperbarui.');
-        header('Location: /profil.php');
-        exit;
+        redirect('profil.php');
     }
 }
 
@@ -90,7 +88,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="col-12 col-md-8">
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-4">
-                <form action="/profil.php" method="POST">
+                <form action="<?= url('profil.php') ?>" method="POST">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
                     <div class="row g-3 mb-4">

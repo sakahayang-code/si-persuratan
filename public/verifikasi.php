@@ -19,9 +19,9 @@ $alamat = Pengaturan::get('alamat_instansi', 'Jl. Medan Merdeka Barat No. 12, Ja
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi Keaslian Dokumen - SI-PERSURATAN</title>
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <script src="/assets/js/lucide.min.js"></script>
+    <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
+    <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
     <style>
         body {
             background-color: #F1F5F9;
@@ -53,7 +53,7 @@ $alamat = Pengaturan::get('alamat_instansi', 'Jl. Medan Merdeka Barat No. 12, Ja
 
 <div class="verif-card">
     <div class="verif-header">
-        <img src="/assets/img/logo-instansi.svg" alt="Logo" width="48" height="48" class="mb-2">
+        <img src="<?= url('assets/img/logo-instansi.svg') ?>" alt="Logo" width="48" height="48" class="mb-2">
         <h5 class="fw-bold m-0" style="letter-spacing: -0.02em;">SI-PERSURATAN</h5>
         <div class="text-secondary small">Layanan Verifikasi Keabsahan Dokumen Dinas</div>
     </div>
@@ -130,7 +130,7 @@ $alamat = Pengaturan::get('alamat_instansi', 'Jl. Medan Merdeka Barat No. 12, Ja
             </div>
 
             <div class="text-center">
-                <a href="/login.php" class="btn btn-outline-primary btn-sm px-4">Buka Portal SI-PERSURATAN</a>
+                <a href="<?= url('login.php') ?>" class="btn btn-outline-primary btn-sm px-4">Buka Portal SI-PERSURATAN</a>
             </div>
         <?php endif; ?>
     </div>

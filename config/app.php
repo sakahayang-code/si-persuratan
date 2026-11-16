@@ -27,13 +27,29 @@ define('APP_SUBTITLE', 'Sistem Informasi Persuratan Digital & Arsip Terintegrasi
 
 // Dynamic Base URL detection (compatible with Root Domain, Subdomain, and cPanel Subfolders)
 if (!defined('BASE_URL')) {
-    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-    $scriptDir = dirname($scriptName);
-    $scriptDir = str_replace('\\', '/', $scriptDir);
-    // Strip trailing /public if present
-    $scriptDir = preg_replace('/\/public$/', '', $scriptDir);
-    $baseUrl = ($scriptDir === '/' || $scriptDir === '.' || empty($scriptDir)) ? '' : rtrim($scriptDir, '/');
-    define('BASE_URL', $baseUrl);
+    if (getenv('APP_BASE_URL') !== false && getenv('APP_BASE_URL') !== '') {
+        define('BASE_URL', rtrim(getenv('APP_BASE_URL'), '/'));
+    } else {
+        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+        $scriptDir = dirname($scriptName);
+        $scriptDir = str_replace('\\', '/', $scriptDir);
+        // Strip trailing /public if present
+        $scriptDir = preg_replace('/\/public$/', '', $scriptDir);
+        $baseUrl = ($scriptDir === '/' || $scriptDir === '.' || empty($scriptDir)) ? '' : rtrim($scriptDir, '/');
+
+        // Fallback: check REQUEST_URI if SCRIPT_NAME didn't capture the subfolder
+        if (empty($baseUrl) && isset($_SERVER['REQUEST_URI'])) {
+            $uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '';
+            if (preg_match('#^/([^/]+)#', $uriPath, $m) && $m[1] !== 'public') {
+                $candidate = '/' . $m[1];
+                if ((isset($_SERVER['DOCUMENT_ROOT']) && is_dir($_SERVER['DOCUMENT_ROOT'] . $candidate))
+                    || basename(BASE_PATH) === $m[1]) {
+                    $baseUrl = $candidate;
+                }
+            }
+        }
+        define('BASE_URL', $baseUrl);
+    }
 }
 
 /**
@@ -45,6 +61,14 @@ function url(string $path = ''): string {
         return '/' . $cleanPath;
     }
     return BASE_URL . '/' . $cleanPath;
+}
+
+/**
+ * Helper to perform safe redirect relative to application root
+ */
+function redirect(string $path): void {
+    header('Location: ' . url($path));
+    exit;
 }
 
 // Autoloader for app classes and vendor
@@ -66,15 +90,18 @@ if (file_exists(BASE_PATH . '/vendor/autoload.php')) {
 
 // Safe Session Initialization for cPanel & shared hosting
 if (session_status() === PHP_SESSION_NONE) {
-    if (!is_dir(SESSIONS_PATH)) {
-        @mkdir(SESSIONS_PATH, 0777, true);
-    }
-    
-    // Test write permission, fallback to system temp if restricted
-    if (is_dir(SESSIONS_PATH) && is_writable(SESSIONS_PATH)) {
-        @session_save_path(SESSIONS_PATH);
+    $sysSavePath = ini_get('session.save_path');
+    if (!empty($sysSavePath) && is_dir($sysSavePath) && is_writable($sysSavePath)) {
+        // Native system session path is writable and valid (recommended for cPanel)
     } else {
-        @session_save_path(sys_get_temp_dir());
+        if (!is_dir(SESSIONS_PATH)) {
+            @mkdir(SESSIONS_PATH, 0777, true);
+        }
+        if (is_dir(SESSIONS_PATH) && is_writable(SESSIONS_PATH)) {
+            @session_save_path(SESSIONS_PATH);
+        } else {
+            @session_save_path(sys_get_temp_dir());
+        }
     }
 
     ini_set('session.cookie_httponly', 1);

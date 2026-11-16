@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $act = $_GET['act'] ?? '';
@@ -14,8 +13,7 @@ $csrf = $_GET['csrf'] ?? '';
 
 if (!Auth::verifyCsrf($csrf)) {
     Flash::set('danger', 'Token CSRF tidak valid.');
-    header('Location: /surat_keluar/');
-    exit;
+    redirect('surat_keluar/');
 }
 
 if ($act === 'approve') {
@@ -37,5 +35,4 @@ if ($act === 'approve') {
     }
 }
 
-header('Location: /surat_keluar/preview.php?id=' . $id);
-exit;
+redirect('surat_keluar/preview.php?id=' . $id);

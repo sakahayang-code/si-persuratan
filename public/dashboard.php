@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $pageTitle = 'Dashboard Persuratan';
@@ -81,18 +80,18 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
     <div class="d-flex flex-wrap gap-2">
         <?php if (Auth::can('surat_masuk.create')): ?>
-            <a href="/surat_masuk/tambah.php" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm rounded-3">
+            <a href="<?= url('surat_masuk/tambah.php') ?>" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm rounded-3">
                 <i data-lucide="plus-circle" style="width: 18px;"></i>
                 <span>Catat Surat Masuk</span>
             </a>
         <?php endif; ?>
         <?php if (Auth::can('surat_keluar.create')): ?>
-            <a href="/generator/" class="btn btn-outline-primary d-flex align-items-center gap-2 rounded-3 bg-white">
+            <a href="<?= url('generator/') ?>" class="btn btn-outline-primary d-flex align-items-center gap-2 rounded-3 bg-white">
                 <i data-lucide="file-text" style="width: 18px;"></i>
                 <span>Buat Surat Keluar</span>
             </a>
         <?php endif; ?>
-        <a href="/arsip/" class="btn btn-outline-secondary d-flex align-items-center gap-2 rounded-3 bg-white">
+        <a href="<?= url('arsip/') ?>" class="btn btn-outline-secondary d-flex align-items-center gap-2 rounded-3 bg-white">
             <i data-lucide="folder-search" style="width: 18px;"></i>
             <span>Buka Arsip</span>
         </a>
@@ -102,7 +101,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- 4 Statistics Summary Cards (Real-time DB counts with direct click navigation) -->
 <div class="row g-3 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
-        <a href="/surat_masuk/" class="stat-card">
+        <a href="<?= url('surat_masuk/') ?>" class="stat-card">
             <div>
                 <div class="stat-val text-primary"><?= $totalSuratMasuk ?></div>
                 <p class="stat-label">Total Surat Masuk</p>
@@ -115,7 +114,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
 
     <div class="col-12 col-sm-6 col-xl-3">
-        <a href="/surat_keluar/" class="stat-card">
+        <a href="<?= url('surat_keluar/') ?>" class="stat-card">
             <div>
                 <div class="stat-val" style="color: #7C3AED;"><?= $totalSuratKeluar ?></div>
                 <p class="stat-label">Total Surat Keluar</p>
@@ -128,7 +127,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
 
     <div class="col-12 col-sm-6 col-xl-3">
-        <a href="/surat_masuk/?status=diterima" class="stat-card">
+        <a href="<?= url('surat_masuk/?status=diterima') ?>" class="stat-card">
             <div>
                 <div class="stat-val text-warning"><?= $totalMenungguDisposisi ?></div>
                 <p class="stat-label">Menunggu Disposisi</p>
@@ -141,7 +140,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
 
     <div class="col-12 col-sm-6 col-xl-3">
-        <a href="/arsip/" class="stat-card">
+        <a href="<?= url('arsip/') ?>" class="stat-card">
             <div>
                 <div class="stat-val text-success"><?= $totalArsip ?></div>
                 <p class="stat-label">Total Arsip Digital</p>
@@ -195,7 +194,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                     <span class="p-1 rounded bg-warning-subtle text-warning"><i data-lucide="alert-circle" style="width: 18px;"></i></span>
                     <h5 class="card-title fw-bold m-0 fs-6">Surat Masuk Menunggu Disposisi</h5>
                 </div>
-                <a href="/surat_masuk/?status=diterima" class="btn btn-sm btn-light text-primary small">Lihat Semua</a>
+                <a href="<?= url('surat_masuk/?status=diterima') ?>" class="btn btn-sm btn-light text-primary small">Lihat Semua</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -227,7 +226,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                         </td>
                                         <td>
                                             <?php
-                                            $urgClass = match($sm['tingkat_urgensi']) {
+                                             $urgClass = match($sm['tingkat_urgensi']) {
                                                 'penting' => 'bg-warning text-dark',
                                                 'segera' => 'bg-danger text-white',
                                                 'rahasia' => 'bg-dark text-white',
@@ -237,7 +236,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                             <span class="badge <?= $urgClass ?>"><?= ucfirst($sm['tingkat_urgensi']) ?></span>
                                         </td>
                                         <td>
-                                            <a href="/disposisi/buat.php?surat_id=<?= $sm['id'] ?>" class="btn btn-sm btn-outline-primary py-1 px-2">
+                                            <a href="<?= url('disposisi/buat.php?surat_id=' . $sm['id']) ?>" class="btn btn-sm btn-outline-primary py-1 px-2">
                                                 Disposisi
                                             </a>
                                         </td>
@@ -259,7 +258,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                     <span class="p-1 rounded bg-info-subtle text-info"><i data-lucide="check-circle" style="width: 18px;"></i></span>
                     <h5 class="card-title fw-bold m-0 fs-6">Surat Keluar Menunggu Persetujuan</h5>
                 </div>
-                <a href="/surat_keluar/" class="btn btn-sm btn-light text-primary small">Lihat Semua</a>
+                <a href="<?= url('surat_keluar/') ?>" class="btn btn-sm btn-light text-primary small">Lihat Semua</a>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -293,7 +292,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                             <span class="badge bg-secondary text-white"><?= ucfirst(str_replace('_', ' ', $sk['status'])) ?></span>
                                         </td>
                                         <td>
-                                            <a href="/surat_keluar/preview.php?id=<?= $sk['id'] ?>" class="btn btn-sm btn-outline-info py-1 px-2">
+                                            <a href="<?= url('surat_keluar/preview.php?id=' . $sk['id']) ?>" class="btn btn-sm btn-outline-info py-1 px-2">
                                                 Review
                                             </a>
                                         </td>
@@ -313,7 +312,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
         <h5 class="card-title fw-bold m-0 fs-6">Aktivitas Persuratan Terkini (Audit Trail)</h5>
         <?php if (Auth::hasRole('superadmin')): ?>
-            <a href="/audit_log.php" class="btn btn-sm btn-light small">Lihat Log Lengkap</a>
+            <a href="<?= url('audit_log.php') ?>" class="btn btn-sm btn-light small">Lihat Log Lengkap</a>
         <?php endif; ?>
     </div>
     <div class="card-body p-0">

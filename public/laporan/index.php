@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('laporan.view')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Laporan & Rekapitulasi Persuratan';
@@ -61,11 +60,11 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Hasilkan rekapitulasi data surat masuk, surat keluar, dan disposisi untuk evaluasi berkala.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/laporan/export.php?tipe=<?= $tipeLaporan ?>&format=excel&date_from=<?= $dateFrom ?>&date_to=<?= $dateTo ?>&status=<?= $statusFilter ?>" class="btn btn-outline-success d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
+        <a href="<?= url('laporan/export.php') ?>?tipe=<?= $tipeLaporan ?>&format=excel&date_from=<?= $dateFrom ?>&date_to=<?= $dateTo ?>&status=<?= $statusFilter ?>" class="btn btn-outline-success d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
             <i data-lucide="sheet" style="width: 16px;"></i>
             <span>Ekspor Excel</span>
         </a>
-        <a href="/laporan/export.php?tipe=<?= $tipeLaporan ?>&format=pdf&date_from=<?= $dateFrom ?>&date_to=<?= $dateTo ?>&status=<?= $statusFilter ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
+        <a href="<?= url('laporan/export.php') ?>?tipe=<?= $tipeLaporan ?>&format=pdf&date_from=<?= $dateFrom ?>&date_to=<?= $dateTo ?>&status=<?= $statusFilter ?>" target="_blank" class="btn btn-outline-danger d-flex align-items-center gap-2 bg-white rounded-3 shadow-sm">
             <i data-lucide="file-down" style="width: 16px;"></i>
             <span>Cetak / PDF</span>
         </a>
@@ -75,7 +74,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Filter Selection Card -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-4">
-        <form action="/laporan/" method="GET" class="row g-3 align-items-end">
+        <form action="<?= url('laporan/') ?>" method="GET" class="row g-3 align-items-end">
             <div class="col-12 col-md-3">
                 <label class="form-label small fw-bold text-secondary">Jenis Laporan</label>
                 <select name="tipe" class="form-select">

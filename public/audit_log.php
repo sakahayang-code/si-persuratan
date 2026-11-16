@@ -5,8 +5,7 @@ require_once __DIR__ . '/../config/app.php';
 
 if (!Auth::check() || !Auth::hasRole('superadmin')) {
     Flash::set('danger', 'Hanya Super Administrator yang berwenang melihat Audit Trail Log.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Audit Trail Log Aktivitas Sistem';
@@ -50,7 +49,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/audit_log.php" method="GET" class="row g-2 align-items-end">
+        <form action="<?= url('audit_log.php') ?>" method="GET" class="row g-2 align-items-end">
             <div class="col-12 col-md-5">
                 <label class="form-label small text-secondary fw-semibold">Filter Modul</label>
                 <select name="module" class="form-select">

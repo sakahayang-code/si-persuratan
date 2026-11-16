@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 $id = (int)($_GET['id'] ?? 0);

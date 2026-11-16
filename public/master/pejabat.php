@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('master.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Master Pejabat & Tanda Tangan';
@@ -34,8 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    header('Location: /master/pejabat.php');
-    exit;
+    redirect('master/pejabat.php');
 }
 
 $pejabatList = Pejabat::getAll();
@@ -92,7 +90,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </span>
                             </td>
                             <td class="text-center">
-                                <form action="/master/pejabat.php" method="POST" class="d-inline">
+                                <form action="<?= url('master/pejabat.php') ?>" method="POST" class="d-inline">
                                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
                                     <input type="hidden" name="action" value="toggle_status">
                                     <input type="hidden" name="id" value="<?= $p['id'] ?>">
@@ -112,7 +110,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Tambah Pejabat -->
 <div class="modal fade" id="modalTambahPejabat" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/master/pejabat.php" method="POST" class="modal-content">
+        <form action="<?= url('master/pejabat.php') ?>" method="POST" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <input type="hidden" name="action" value="create">
 

@@ -4,8 +4,7 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('arsip.manage')) {
-    header('Location: /arsip/');
-    exit;
+    redirect('arsip/');
 }
 
 $act = $_GET['act'] ?? ($_POST['act'] ?? '');
@@ -14,8 +13,7 @@ $csrf = $_GET['csrf'] ?? ($_POST['csrf_token'] ?? '');
 
 if (!Auth::verifyCsrf($csrf)) {
     Flash::set('danger', 'Token CSRF tidak valid.');
-    header('Location: /arsip/');
-    exit;
+    redirect('arsip/');
 }
 
 if ($act === 'toggle_star') {
@@ -50,5 +48,4 @@ if ($act === 'toggle_star') {
     Flash::set('success', 'Dokumen berhasil disimpan ke arsip digital.');
 }
 
-header('Location: /arsip/');
-exit;
+redirect('arsip/');

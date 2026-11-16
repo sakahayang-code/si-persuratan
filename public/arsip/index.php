@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('arsip.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Manajemen Arsip Digital';
@@ -41,7 +40,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Filter Card -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/arsip/" method="GET" class="row g-2 align-items-end">
+        <form action="<?= url('arsip/') ?>" method="GET" class="row g-2 align-items-end">
             <div class="col-12 col-md-4">
                 <label class="form-label small text-secondary fw-semibold">Pencarian Metadata</label>
                 <div class="input-group">
@@ -91,7 +90,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
             <div class="col-12 col-md-1 d-flex gap-1">
                 <button type="submit" class="btn btn-primary w-100"><i data-lucide="filter" style="width:16px;"></i></button>
-                <a href="/arsip/" class="btn btn-light border"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
+                <a href="<?= url('arsip/') ?>" class="btn btn-light border"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
             </div>
         </form>
     </div>
@@ -129,7 +128,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                         <?php foreach ($arsipList as $ar): ?>
                             <tr>
                                 <td class="text-center">
-                                    <a href="/arsip/action.php?act=toggle_star&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="text-decoration-none <?= $ar['is_important'] ? 'text-warning' : 'text-muted' ?>" title="Tandai Penting">
+                                    <a href="<?= url('arsip/action.php') ?>?act=toggle_star&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="text-decoration-none <?= $ar['is_important'] ? 'text-warning' : 'text-muted' ?>" title="Tandai Penting">
                                         <?= $ar['is_important'] ? '★' : '☆' ?>
                                     </a>
                                 </td>
@@ -163,7 +162,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 <td>
                                     <div class="d-flex justify-content-center gap-1">
                                         <?php if (!empty($ar['file_path'])): ?>
-                                            <a href="/dokumen_viewer.php?path=<?= urlencode($ar['file_path']) ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Buka Berkas Digital">
+                                            <a href="<?= url('dokumen_viewer.php') ?>?path=<?= urlencode($ar['file_path']) ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Buka Berkas Digital">
                                                 <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                                             </a>
                                         <?php endif; ?>
@@ -172,9 +171,9 @@ require_once APP_PATH . '/views/layouts/header.php';
                                                 <i data-lucide="more-vertical" style="width: 15px; height: 15px;"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end shadow-sm small p-1">
-                                                <li><a class="dropdown-item py-1" href="/arsip/action.php?act=retention&status=aktif&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>">Jadikan Aktif</a></li>
-                                                <li><a class="dropdown-item py-1 text-warning" href="/arsip/action.php?act=retention&status=inaktif&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>">Jadikan Inaktif</a></li>
-                                                <li><a class="dropdown-item py-1 text-danger" href="/arsip/action.php?act=retention&status=dimusnahkan&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>" onclick="return confirm('Peringatan: Pemusnahan arsip memerlukan otorisasi. Lanjutkan?')">Musnahkan Arsip</a></li>
+                                                <li><a class="dropdown-item py-1" href="<?= url('arsip/action.php') ?>?act=retention&status=aktif&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>">Jadikan Aktif</a></li>
+                                                <li><a class="dropdown-item py-1 text-warning" href="<?= url('arsip/action.php') ?>?act=retention&status=inaktif&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>">Jadikan Inaktif</a></li>
+                                                <li><a class="dropdown-item py-1 text-danger" href="<?= url('arsip/action.php') ?>?act=retention&status=dimusnahkan&id=<?= $ar['id'] ?>&csrf=<?= Auth::csrfToken() ?>" onclick="return confirm('Peringatan: Pemusnahan arsip memerlukan otorisasi. Lanjutkan?')">Musnahkan Arsip</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -191,7 +190,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Tambah Arsip Baru -->
 <div class="modal fade" id="modalTambahArsip" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/arsip/action.php?act=create" method="POST" enctype="multipart/form-data" class="modal-content">
+        <form action="<?= url('arsip/action.php?act=create') ?>" method="POST" enctype="multipart/form-data" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="modal-header">

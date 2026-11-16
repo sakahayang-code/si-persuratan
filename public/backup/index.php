@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('backup.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Backup, Restore & Integritas Data';
@@ -26,7 +25,7 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Menjamin keberlanjutan data persuratan dan dokumen arsip sesuai standar Section 8.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/backup/action.php?act=create&csrf=<?= Auth::csrfToken() ?>" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm" onclick="return confirm('Mulai proses pencadangan (backup) database dan seluruh dokumen?')">
+        <a href="<?= url('backup/action.php') ?>?act=create&csrf=<?= Auth::csrfToken() ?>" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm" onclick="return confirm('Mulai proses pencadangan (backup) database dan seluruh dokumen?')">
             <i data-lucide="archive" style="width: 16px;"></i>
             <span>Buat Backup Baru</span>
         </a>
@@ -90,7 +89,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             </div>
         </div>
 
-        <form action="/backup/action.php?act=restore" method="POST" enctype="multipart/form-data" onsubmit="return confirm('Apakah Anda yakin ingin memulihkan sistem dari file backup ini? Sistem akan membuat safety backup terlebih dahulu.')">
+        <form action="<?= url('backup/action.php?act=restore') ?>" method="POST" enctype="multipart/form-data" onsubmit="return confirm('Apakah Anda yakin ingin memulihkan sistem dari file backup ini? Sistem akan membuat safety backup terlebih dahulu.')">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <div class="row g-2 align-items-center">
                 <div class="col-12 col-md-8">
@@ -168,10 +167,10 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="/backup/action.php?act=download&id=<?= $b['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-light border p-1 text-primary" title="Unduh Arsip ZIP">
+                                        <a href="<?= url('backup/action.php') ?>?act=download&id=<?= $b['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-light border p-1 text-primary" title="Unduh Arsip ZIP">
                                             <i data-lucide="download" style="width: 15px; height: 15px;"></i>
                                         </a>
-                                        <a href="/backup/action.php?act=restore_existing&id=<?= $b['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-light border p-1 text-warning" title="Pulihkan dari Berkas Ini" onclick="return confirm('Pulihkan database & dokumen dari arsip ini?')">
+                                        <a href="<?= url('backup/action.php') ?>?act=restore_existing&id=<?= $b['id'] ?>&csrf=<?= Auth::csrfToken() ?>" class="btn btn-sm btn-light border p-1 text-warning" title="Pulihkan dari Berkas Ini" onclick="return confirm('Pulihkan database & dokumen dari arsip ini?')">
                                             <i data-lucide="rotate-ccw" style="width: 15px; height: 15px;"></i>
                                         </a>
                                     </div>

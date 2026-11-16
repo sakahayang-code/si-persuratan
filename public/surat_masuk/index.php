@@ -4,14 +4,12 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check()) {
-    header('Location: /login.php');
-    exit;
+    redirect('login.php');
 }
 
 if (!Auth::can('surat_masuk.view')) {
     Flash::set('danger', 'Anda tidak memiliki hak akses untuk melihat surat masuk.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Manajemen Surat Masuk';
@@ -37,12 +35,12 @@ require_once APP_PATH . '/views/layouts/header.php';
         <p class="text-muted small m-0">Catat, kelola disposisi, dan pantau penyelesaian surat masuk instansi.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/agenda/?jenis=masuk" class="btn btn-outline-secondary d-flex align-items-center gap-2 bg-white rounded-3">
+        <a href="<?= url('agenda/') ?>?jenis=masuk" class="btn btn-outline-secondary d-flex align-items-center gap-2 bg-white rounded-3">
             <i data-lucide="book-open" style="width: 16px;"></i>
             <span>Buku Agenda</span>
         </a>
         <?php if (Auth::can('surat_masuk.create')): ?>
-            <a href="/surat_masuk/tambah.php" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
+            <a href="<?= url('surat_masuk/tambah.php') ?>" class="btn btn-primary d-flex align-items-center gap-2 rounded-3 shadow-sm">
                 <i data-lucide="plus-circle" style="width: 16px;"></i>
                 <span>Catat Surat Masuk</span>
             </a>
@@ -53,7 +51,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Filter Box -->
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-3">
-        <form action="/surat_masuk/" method="GET" class="row g-2 align-items-end">
+        <form action="<?= url('surat_masuk/') ?>" method="GET" class="row g-2 align-items-end">
             <div class="col-12 col-md-3">
                 <label class="form-label small text-secondary fw-semibold">Pencarian</label>
                 <div class="input-group">
@@ -96,7 +94,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
             <div class="col-12 col-md-1 d-flex gap-1">
                 <button type="submit" class="btn btn-primary w-100" title="Filter"><i data-lucide="filter" style="width:16px;"></i></button>
-                <a href="/surat_masuk/" class="btn btn-light border" title="Reset"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
+                <a href="<?= url('surat_masuk/') ?>" class="btn btn-light border" title="Reset"><i data-lucide="rotate-ccw" style="width:16px;"></i></a>
             </div>
         </form>
     </div>
@@ -178,19 +176,19 @@ require_once APP_PATH . '/views/layouts/header.php';
                                 </td>
                                 <td>
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="/surat_masuk/detail.php?id=<?= $sm['id'] ?>" class="btn btn-sm btn-light border p-1" title="Detail & Disposisi">
+                                        <a href="<?= url('surat_masuk/detail.php') ?>?id=<?= $sm['id'] ?>" class="btn btn-sm btn-light border p-1" title="Detail & Disposisi">
                                             <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
                                         </a>
-                                        <a href="/surat_masuk/tanda_terima.php?id=<?= $sm['id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Cetak Tanda Terima">
+                                        <a href="<?= url('surat_masuk/tanda_terima.php') ?>?id=<?= $sm['id'] ?>" target="_blank" class="btn btn-sm btn-light border p-1 text-primary" title="Cetak Tanda Terima">
                                             <i data-lucide="printer" style="width: 15px; height: 15px;"></i>
                                         </a>
                                         <?php if (Auth::can('disposisi.create') && $sm['status'] === 'diterima'): ?>
-                                            <a href="/disposisi/buat.php?surat_id=<?= $sm['id'] ?>" class="btn btn-sm btn-warning text-dark p-1" title="Lembar Disposisi">
+                                            <a href="<?= url('disposisi/buat.php') ?>?surat_id=<?= $sm['id'] ?>" class="btn btn-sm btn-warning text-dark p-1" title="Lembar Disposisi">
                                                 <i data-lucide="git-pull-request" style="width: 15px; height: 15px;"></i>
                                             </a>
                                         <?php endif; ?>
                                         <?php if (Auth::can('surat_masuk.edit')): ?>
-                                            <a href="/surat_masuk/edit.php?id=<?= $sm['id'] ?>" class="btn btn-sm btn-light border p-1" title="Ubah Data">
+                                            <a href="<?= url('surat_masuk/edit.php') ?>?id=<?= $sm['id'] ?>" class="btn btn-sm btn-light border p-1" title="Ubah Data">
                                                 <i data-lucide="pencil" style="width: 15px; height: 15px;"></i>
                                             </a>
                                         <?php endif; ?>

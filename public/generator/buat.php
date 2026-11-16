@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || (!Auth::can('template.manage') && !Auth::can('surat_keluar.create'))) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $templateId = (int)($_GET['id'] ?? 1);
@@ -14,8 +13,7 @@ $template = TemplateSurat::findById($templateId);
 
 if (!$template) {
     Flash::set('danger', 'Template tidak ditemukan.');
-    header('Location: /generator/');
-    exit;
+    redirect('generator/');
 }
 
 $pageTitle = 'Buat ' . $template['nama_template'];
@@ -68,8 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
 
             Flash::set('success', "Surat berhasil digenerate berdasarkan template: {$template['nama_template']}");
-            header('Location: /surat_keluar/preview.php?id=' . $suratId);
-            exit;
+            redirect('surat_keluar/preview.php?id=' . $suratId);
         } catch (Throwable $e) {
             $errors[] = 'Gagal membuat dokumen: ' . $e->getMessage();
         }
@@ -83,13 +80,13 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/generator/">Generator</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('generator/') ?>">Generator</a></li>
                 <li class="breadcrumb-item active"><?= htmlspecialchars($template['nama_template']) ?></li>
             </ol>
         </nav>
         <h4 class="fw-bold m-0" style="letter-spacing: -0.02em;">Generator: <?= htmlspecialchars($template['nama_template']) ?></h4>
     </div>
-    <a href="/generator/" class="btn btn-outline-secondary btn-sm bg-white">Kembali ke Template</a>
+    <a href="<?= url('generator/') ?>" class="btn btn-outline-secondary btn-sm bg-white">Kembali ke Template</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -100,7 +97,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
 <?php endif; ?>
 
-<form action="/generator/buat.php?id=<?= $templateId ?>" method="POST" id="formGenerator">
+<form action="<?= url('generator/buat.php?id=' . $templateId) ?>" method="POST" id="formGenerator">
     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
     <div class="row g-4">
@@ -204,7 +201,7 @@ require_once APP_PATH . '/views/layouts/header.php';
             </div>
 
             <div class="mt-4 d-flex justify-content-end gap-2">
-                <a href="/generator/" class="btn btn-light border px-4">Batal</a>
+                <a href="<?= url('generator/') ?>" class="btn btn-light border px-4">Batal</a>
                 <button type="submit" class="btn btn-primary px-4 fw-semibold d-flex align-items-center gap-2 shadow-sm">
                     <i data-lucide="sparkles" style="width: 18px;"></i>
                     <span>Generate & Buka Surat Keluar</span>

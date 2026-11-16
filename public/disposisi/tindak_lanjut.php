@@ -4,14 +4,12 @@
 require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /disposisi/');
-    exit;
+    redirect('disposisi/');
 }
 
 if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
     Flash::set('danger', 'Token CSRF tidak valid.');
-    header('Location: /disposisi/');
-    exit;
+    redirect('disposisi/');
 }
 
 $suratId = (int)($_POST['surat_masuk_id'] ?? 0);
@@ -21,8 +19,7 @@ $status = $_POST['status'] ?? 'selesai';
 
 if ($suratId <= 0 || empty($tindakan)) {
     Flash::set('danger', 'Tindakan yang dilakukan wajib diisi.');
-    header('Location: /surat_masuk/detail.php?id=' . $suratId);
-    exit;
+    redirect('surat_masuk/detail.php?id=' . $suratId);
 }
 
 try {
@@ -39,5 +36,4 @@ try {
     Flash::set('danger', 'Gagal menyimpan tindak lanjut: ' . $e->getMessage());
 }
 
-header('Location: /surat_masuk/detail.php?id=' . $suratId);
-exit;
+redirect('surat_masuk/detail.php?id=' . $suratId);

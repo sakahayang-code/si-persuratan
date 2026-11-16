@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('disposisi.create')) {
     Flash::set('danger', 'Hanya Pimpinan atau pejabat yang berwenang memberikan lembar disposisi.');
-    header('Location: /disposisi/');
-    exit;
+    redirect('disposisi/');
 }
 
 $pageTitle = 'Buat Lembar Disposisi';
@@ -45,8 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ], $penerimaList);
 
             Flash::set('success', 'Lembar disposisi berhasil diterbitkan dan notifikasi telah dikirim.');
-            header('Location: /surat_masuk/detail.php?id=' . $targetSuratId);
-            exit;
+            redirect('surat_masuk/detail.php?id=' . $targetSuratId);
         } catch (Throwable $e) {
             $errors[] = 'Gagal menyimpan disposisi: ' . $e->getMessage();
         }
@@ -63,13 +61,13 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-1">
-                <li class="breadcrumb-item"><a href="/disposisi/">Disposisi</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('disposisi/') ?>">Disposisi</a></li>
                 <li class="breadcrumb-item active">Lembar Disposisi Baru</li>
             </ol>
         </nav>
         <h4 class="fw-bold m-0">Terbitkan Lembar Disposisi Pimpinan</h4>
     </div>
-    <a href="/disposisi/" class="btn btn-outline-secondary btn-sm bg-white">Kembali</a>
+    <a href="<?= url('disposisi/') ?>" class="btn btn-outline-secondary btn-sm bg-white">Kembali</a>
 </div>
 
 <?php if (!empty($errors)): ?>
@@ -84,7 +82,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="col-12 col-lg-8">
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-4">
-                <form action="/disposisi/buat.php<?= $suratId ? '?surat_id=' . $suratId : '' ?>" method="POST" id="formDisposisi">
+                <form action="<?= url('disposisi/buat.php' . ($suratId ? '?surat_id=' . $suratId : '')) ?>" method="POST" id="formDisposisi">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
                     <!-- Surat Reference -->
@@ -165,7 +163,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                     </div>
 
                     <div class="pt-3 border-top d-flex justify-content-end gap-2">
-                        <a href="/disposisi/" class="btn btn-light border px-4">Batal</a>
+                        <a href="<?= url('disposisi/') ?>" class="btn btn-light border px-4">Batal</a>
                         <button type="submit" class="btn btn-primary px-4 fw-semibold d-flex align-items-center gap-2 shadow-sm">
                             <i data-lucide="check" style="width: 18px;"></i>
                             <span>Terbitkan Disposisi</span>

@@ -5,8 +5,7 @@ require_once __DIR__ . '/../../config/app.php';
 
 if (!Auth::check() || !Auth::can('master.manage')) {
     Flash::set('danger', 'Akses ditolak.');
-    header('Location: /dashboard.php');
-    exit;
+    redirect('dashboard.php');
 }
 
 $pageTitle = 'Master Klasifikasi Surat';
@@ -27,8 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Flash::set('info', 'Klasifikasi surat telah dihapus.');
         }
     }
-    header('Location: /master/klasifikasi.php');
-    exit;
+    redirect('master/klasifikasi.php');
 }
 
 $klasList = Klasifikasi::getAll();
@@ -74,7 +72,7 @@ require_once APP_PATH . '/views/layouts/header.php';
                             </td>
                             <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($k['keterangan'] ?? 'Fasilitatif') ?></span></td>
                             <td class="text-center">
-                                <form action="/master/klasifikasi.php" method="POST" class="d-inline" onsubmit="return confirm('Hapus klasifikasi ini?')">
+                                <form action="<?= url('master/klasifikasi.php') ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus klasifikasi ini?')">
                                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="id" value="<?= $k['id'] ?>">
@@ -94,7 +92,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 <!-- Modal Tambah Klasifikasi -->
 <div class="modal fade" id="modalTambahKlasifikasi" tabindex="-1">
     <div class="modal-dialog">
-        <form action="/master/klasifikasi.php" method="POST" class="modal-content">
+        <form action="<?= url('master/klasifikasi.php') ?>" method="POST" class="modal-content">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
             <input type="hidden" name="action" value="create">
 

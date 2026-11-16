@@ -194,7 +194,9 @@ const OfflineManager = {
 document.addEventListener('DOMContentLoaded', () => {
     // Register Service Worker if supported
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/service-worker.js')
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        const swUrl = manifestLink ? manifestLink.getAttribute('href').replace(/manifest\.json$/, 'service-worker.js') : 'service-worker.js';
+        navigator.serviceWorker.register(swUrl)
             .then((reg) => console.log('[PWA] Service Worker terdaftar:', reg.scope))
             .catch((err) => console.warn('[PWA] Service Worker gagal daftar:', err));
     }
