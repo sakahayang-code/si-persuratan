@@ -1,0 +1,328 @@
+/* persuratan/public/assets/css/custom.css */
+
+:root {
+    --primary-color: #2563EB;
+    --primary-hover: #1D4ED8;
+    --primary-light: #EFF6FF;
+    --accent-purple: #7C3AED;
+    --accent-teal: #0D9488;
+    --accent-amber: #F59E0B;
+    --accent-orange: #F97316;
+    --bg-main: #F1F5F9;
+    --card-bg: #FFFFFF;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --sidebar-width: 260px;
+    --header-height: 68px;
+    --bottom-nav-height: 64px;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Sidebar Styling */
+.app-sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #0F172A; /* Slate 900 for high-contrast professional SaaS feel */
+    color: #F8FAFC;
+    z-index: 1040;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+}
+
+.sidebar-brand {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-brand-title {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.sidebar-brand-subtitle {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 1rem 0.75rem;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.menu-header {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748B;
+    padding: 0.75rem 0.75rem 0.35rem 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.menu-item {
+    margin-bottom: 2px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.65rem 0.85rem;
+    color: #94A3B8;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.menu-link:hover {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.menu-link.active {
+    color: #FFFFFF;
+    background: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.menu-link .menu-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.menu-badge {
+    margin-left: auto;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+/* Main Content Area */
+.app-main {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+.app-header {
+    height: var(--header-height);
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.header-search {
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+}
+
+.header-search input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.4rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    background-color: #F8FAFC;
+    font-size: 0.88rem;
+    transition: all 0.2s ease;
+}
+
+.header-search input:focus {
+    background-color: #FFFFFF;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    outline: none;
+}
+
+.header-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94A3B8;
+    width: 16px;
+    height: 16px;
+}
+
+/* Cards & Statistics */
+.stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+    color: inherit;
+}
+
+.stat-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-val {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.stat-label {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Status Indicator */
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Badges */
+.badge-soft-primary { background-color: #EFF6FF; color: #2563EB; }
+.badge-soft-success { background-color: #ECFDF5; color: #059669; }
+.badge-soft-warning { background-color: #FFFBEB; color: #D97706; }
+.badge-soft-danger { background-color: #FEF2F2; color: #DC2626; }
+.badge-soft-info { background-color: #F0FDF4; color: #0284C7; }
+.badge-soft-purple { background-color: #FAF5FF; color: #7C3AED; }
+
+/* Custom Tables */
+.table-custom {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-custom thead th {
+    background-color: #F8FAFC;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.85rem 1rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-custom tbody td {
+    padding: 0.95rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.88rem;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #F8FAFC;
+}
+
+/* Bottom Navigation for Mobile / Android PWA */
+.mobile-bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-nav-height);
+    background: #FFFFFF;
+    border-top: 1px solid var(--border-color);
+    z-index: 1030;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 500;
+    gap: 3px;
+    padding: 4px 12px;
+}
+
+.mobile-nav-item.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .app-sidebar {
+        transform: translateX(-100%);
+    }
+    .app-sidebar.show {
+        transform: translateX(0);
+    }
+    .app-main {
+        margin-left: 0;
+        padding-bottom: var(--bottom-nav-height);
+    }
+    .mobile-bottom-nav {
+        display: flex;
+    }
+    .app-header {
+        padding: 0 1rem;
+    }
+}

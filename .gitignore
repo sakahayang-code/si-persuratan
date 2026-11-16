@@ -1,0 +1,19 @@
+# Composer dependencies
+/vendor/
+
+# Sessions & Logs
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/backups/*
+!/storage/backups/.gitkeep
+/storage/temp_*
+
+# SQLite WAL temp files
+*.sqlite-wal
+*.sqlite-shm
+
+# OS files
+.DS_Store
+Thumbs.db
