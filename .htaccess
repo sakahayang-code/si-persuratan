@@ -1,4 +1,6 @@
 # SI-PERSURATAN - Apache & LiteSpeed Configuration for cPanel
+DirectoryIndex index.html index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
@@ -8,28 +10,21 @@
     RewriteRule ^\.git - [F,L,NC]
     RewriteRule ^\.env - [F,L,NC]
 
-    # 2. If physical file or folder exists directly at root (e.g. /assets/...), serve it directly
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    # 2. If physical file exists directly, serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # 3. If directory, let DirectoryIndex handle index.html
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # 3. If already requesting public/, do nothing
-    RewriteRule ^public(/|$) - [L]
-
-    # 4. Route check.php directly if present in public/
-    RewriteRule ^check\.php$ public/check.php [L,QSA]
-
-    # 5. Route all other requests to public folder
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ public/$1 [L,QSA]
-
-    # 6. Default root request to public/
-    RewriteRule ^$ public/ [L,QSA]
+    # 4. Fallback for non-existent routes
+    RewriteRule ^(.*)$ index.html [L,QSA]
 </IfModule>
 
 # Ensure accurate MIME types for static assets
 <IfModule mod_mime.c>
+    AddType text/html .html .htm
     AddType text/css .css
     AddType application/javascript .js
     AddType image/svg+xml .svg

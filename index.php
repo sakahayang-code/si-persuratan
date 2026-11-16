@@ -1,12 +1,12 @@
 <?php
-// persuratan/index.php
-// Entry router forwarding requests to public/
+// SI-PERSURATAN - Sistem Informasi Persuratan Digital & Arsip Terintegrasi
+// Serve index.html directly if available
 
-$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-$dir = dirname($scriptName);
-$dir = str_replace('\\', '/', $dir);
-$baseUrl = ($dir === '/' || $dir === '.' || empty($dir)) ? '' : rtrim($dir, '/');
+if (file_exists(__DIR__ . '/index.html')) {
+    header('Content-Type: text/html; charset=UTF-8');
+    readfile(__DIR__ . '/index.html');
+    exit;
+}
 
-// Forward to public directory cleanly
-header('Location: ' . $baseUrl . '/public/');
+header('Location: index.html');
 exit;

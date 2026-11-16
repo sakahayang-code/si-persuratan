@@ -3,12 +3,10 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/mulw1713/public_html/persuratan
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/mkdir -p $DEPLOYPATH/database
-    - /bin/mkdir -p $DEPLOYPATH/storage/database $DEPLOYPATH/storage/documents $DEPLOYPATH/storage/backups $DEPLOYPATH/storage/logs $DEPLOYPATH/storage/sessions
-    - test -f $DEPLOYPATH/storage/database/persuratan.sqlite && /bin/cp $DEPLOYPATH/storage/database/persuratan.sqlite /tmp/persuratan_backup.sqlite || true
+    - /bin/mkdir -p $DEPLOYPATH/database $DEPLOYPATH/storage
     - /bin/cp -R * $DEPLOYPATH/
     - /bin/cp -f .htaccess $DEPLOYPATH/
-    - test -f /tmp/persuratan_backup.sqlite && /bin/cp -f /tmp/persuratan_backup.sqlite $DEPLOYPATH/storage/database/persuratan.sqlite && /bin/rm -f /tmp/persuratan_backup.sqlite || true
-    - /bin/chmod -R 775 $DEPLOYPATH/storage $DEPLOYPATH/database
-    - /bin/chmod -R 777 $DEPLOYPATH/storage/database $DEPLOYPATH/storage/sessions 2>/dev/null || true
-    - /bin/chmod -R 755 $DEPLOYPATH/assets $DEPLOYPATH/public 2>/dev/null || true
+    - test -f public/.htaccess && /bin/cp -f public/.htaccess $DEPLOYPATH/public/ || true
+    - /bin/chmod -R 755 $DEPLOYPATH 2>/dev/null || true
+    - /bin/chmod 644 $DEPLOYPATH/index.html $DEPLOYPATH/.htaccess 2>/dev/null || true
+    - /bin/chmod -R 775 $DEPLOYPATH/storage $DEPLOYPATH/database 2>/dev/null || true
