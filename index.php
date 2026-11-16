@@ -1,4 +1,12 @@
 <?php
-// Root router forwarding to public/index.php
+// persuratan/index.php
+// Entry router forwarding requests to public/
 
-require_once __DIR__ . '/public/index.php';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$dir = dirname($scriptName);
+$dir = str_replace('\\', '/', $dir);
+$baseUrl = ($dir === '/' || $dir === '.' || empty($dir)) ? '' : rtrim($dir, '/');
+
+// Forward to public directory cleanly
+header('Location: ' . $baseUrl . '/public/');
+exit;

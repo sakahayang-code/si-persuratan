@@ -25,25 +25,37 @@ define('APP_VERSION', '1.0.0');
 define('APP_RELEASE_DATE', '16 November 2026');
 define('APP_SUBTITLE', 'Sistem Informasi Persuratan Digital & Arsip Terintegrasi');
 
+// Dynamic Base URL detection (compatible with Root Domain, Subdomain, and cPanel Subfolders)
+if (!defined('BASE_URL')) {
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $scriptDir = dirname($scriptName);
+    $scriptDir = str_replace('\\', '/', $scriptDir);
+    // Strip trailing /public if present
+    $scriptDir = preg_replace('/\/public$/', '', $scriptDir);
+    $baseUrl = ($scriptDir === '/' || $scriptDir === '.' || empty($scriptDir)) ? '' : rtrim($scriptDir, '/');
+    define('BASE_URL', $baseUrl);
+}
+
+/**
+ * Helper to generate URL relative to application root
+ */
+function url(string $path = ''): string {
+    $cleanPath = ltrim($path, '/');
+    if (empty(BASE_URL)) {
+        return '/' . $cleanPath;
+    }
+    return BASE_URL . '/' . $cleanPath;
+}
+
 // Autoloader for app classes and vendor
 spl_autoload_register(function ($class) {
-    // Check in app/helpers
-    $file = APP_PATH . '/helpers/' . $class . '.php';
-    if (file_exists($file)) {
-        require_once $file;
-        return;
-    }
-    // Check in app/models
-    $file = APP_PATH . '/models/' . $class . '.php';
-    if (file_exists($file)) {
-        require_once $file;
-        return;
-    }
-    // Check in app/controllers
-    $file = APP_PATH . '/controllers/' . $class . '.php';
-    if (file_exists($file)) {
-        require_once $file;
-        return;
+    $dirs = ['helpers', 'models', 'controllers'];
+    foreach ($dirs as $dir) {
+        $file = APP_PATH . '/' . $dir . '/' . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+            return;
+        }
     }
 });
 
@@ -52,14 +64,21 @@ if (file_exists(BASE_PATH . '/vendor/autoload.php')) {
     require_once BASE_PATH . '/vendor/autoload.php';
 }
 
-// Session security configuration
+// Safe Session Initialization for cPanel & shared hosting
 if (session_status() === PHP_SESSION_NONE) {
     if (!is_dir(SESSIONS_PATH)) {
-        @mkdir(SESSIONS_PATH, 0755, true);
+        @mkdir(SESSIONS_PATH, 0777, true);
     }
-    session_save_path(SESSIONS_PATH);
+    
+    // Test write permission, fallback to system temp if restricted
+    if (is_dir(SESSIONS_PATH) && is_writable(SESSIONS_PATH)) {
+        @session_save_path(SESSIONS_PATH);
+    } else {
+        @session_save_path(sys_get_temp_dir());
+    }
+
     ini_set('session.cookie_httponly', 1);
     ini_set('session.use_only_cookies', 1);
     ini_set('session.cookie_samesite', 'Lax');
-    session_start();
+    @session_start();
 }

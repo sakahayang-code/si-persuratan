@@ -14,17 +14,17 @@ $pageTitle = $pageTitle ?? 'Dashboard Persuratan';
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#2563EB">
     <meta name="description" content="SI-PERSURATAN - Sistem Informasi Persuratan Digital dan Arsip Terintegrasi">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <link rel="manifest" href="<?= url('manifest.json') ?>">
+    <link rel="icon" type="image/png" href="<?= url('assets/img/favicon.png') ?>">
     <title><?= htmlspecialchars($pageTitle) ?> - SI-PERSURATAN</title>
     
     <!-- Local CSS (Works 100% Offline) -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="<?= url('assets/css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= url('assets/css/custom.css') ?>">
     
     <!-- Local JS Libraries -->
-    <script src="/assets/js/chart.umd.min.js"></script>
-    <script src="/assets/js/lucide.min.js"></script>
+    <script src="<?= url('assets/js/chart.umd.min.js') ?>"></script>
+    <script src="<?= url('assets/js/lucide.min.js') ?>"></script>
 </head>
 <body>
 
@@ -41,7 +41,7 @@ $pageTitle = $pageTitle ?? 'Dashboard Persuratan';
                     <i data-lucide="menu"></i>
                 </button>
                 <div class="header-search d-none d-md-block">
-                    <form action="/pencarian.php" method="GET">
+                    <form action="<?= url('pencarian.php') ?>" method="GET">
                         <i data-lucide="search" class="header-search-icon"></i>
                         <input type="text" name="q" placeholder="Cari nomor surat, perihal, atau arsip..." value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
                     </form>
@@ -112,17 +112,18 @@ $pageTitle = $pageTitle ?? 'Dashboard Persuratan';
                             <div class="text-muted" style="font-size: 11px;"><?= htmlspecialchars($currentUser['email'] ?? '') ?></div>
                             <div class="text-muted" style="font-size: 11px;">NIP: <?= htmlspecialchars($currentUser['nip'] ?? '-') ?></div>
                         </li>
-                        <li><a class="dropdown-item py-1 small rounded" href="/profil.php"><i data-lucide="user" class="me-2" style="width:14px; height:14px;"></i> Profil Pengguna</a></li>
+                        <li><a class="dropdown-item py-1 small rounded" href="<?= url('profil.php') ?>"><i data-lucide="user" class="me-2" style="width:14px; height:14px;"></i> Profil Pengguna</a></li>
+                        <li><a class="dropdown-item py-1 small rounded" href="<?= url('check.php') ?>"><i data-lucide="activity" class="me-2" style="width:14px; height:14px;"></i> Diagnosa Server (check.php)</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li class="px-2 py-1 text-muted" style="font-size: 10px; font-weight: 600;">GANTI PERAN CEPAT (DEMO):</li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=superadmin">👑 Super Admin</a></li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=admin_persuratan">📑 Admin Persuratan</a></li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=pimpinan">👔 Pimpinan (Bambang)</a></li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=sekretaris">💼 Sekretaris (Dewi)</a></li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=petugas">📋 Petugas Registrasi</a></li>
-                        <li><a class="dropdown-item py-1 small" href="/switch_role.php?role=pegawai">👤 Pegawai / Staf</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=superadmin') ?>">👑 Super Admin</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=admin_persuratan') ?>">📑 Admin Persuratan</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=pimpinan') ?>">👔 Pimpinan (Bambang)</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=sekretaris') ?>">💼 Sekretaris (Dewi)</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=petugas') ?>">📋 Petugas Registrasi</a></li>
+                        <li><a class="dropdown-item py-1 small" href="<?= url('switch_role.php?role=pegawai') ?>">👤 Pegawai / Staf</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-1 small text-danger rounded" href="/logout.php"><i data-lucide="log-out" class="me-2" style="width:14px; height:14px;"></i> Keluar Sistem</a></li>
+                        <li><a class="dropdown-item py-1 small text-danger rounded" href="<?= url('logout.php') ?>"><i data-lucide="log-out" class="me-2" style="width:14px; height:14px;"></i> Keluar Sistem</a></li>
                     </ul>
                 </div>
             </div>

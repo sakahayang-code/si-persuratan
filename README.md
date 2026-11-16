@@ -119,5 +119,72 @@ Buka peramban pada: `http://localhost:8000` (atau port yang ditentukan).
 
 ## 🔍 7. Verifikasi QR Code Keaslian Dokumen (Section 3.8)
 Setiap surat keluar yang digenerate oleh sistem dibekali dengan **Token Digital Unik** dan **QR Code**:
-- Format URL Verifikasi: `http://localhost:8000/verifikasi.php?doc={TOKEN}`
+- Format URL Verifikasi: `http://domainanda.com/verifikasi.php?doc={TOKEN}`
 - Setiap pihak penerima dapat memindai kode QR menggunakan kamera ponsel untuk membuktikan keaslian nomor surat, perihal, nama penandatangan, dan cap instansi secara langsung tanpa harus login ke sistem.
+
+---
+
+## 🌐 8. Panduan Deployment cPanel & Troubleshooting
+
+### 🛠️ Langkah Self-Diagnosis Otomatis
+Setelah mengunggah seluruh berkas ke cPanel, segera buka halaman diagnostik:
+```
+http://domainanda.com/check.php
+(atau http://domainanda.com/public/check.php)
+```
+Halaman ini secara otomatis memeriksa:
+- Versi PHP (Wajib PHP 8.1+ / Direkomendasikan PHP 8.2+)
+- Ekstensi PHP (`pdo_sqlite`, `sqlite3`, `zip`, `gd`, `mbstring`, `fileinfo`, `dom`, `xml`)
+- Izin Tulis Direktori (`storage/database`, `storage/documents`, `storage/backups`, dll.)
+- Koneksi & Integritas Basis Data SQLite
+
+---
+
+### 📋 2 Opsi Struktur Deployment cPanel:
+
+#### Opsi 1 (Sangat Direkomendasikan - Document Root ke `public/`):
+1. Di cPanel, buka menu **Domains** (atau **Subdomains** / **Addon Domains**).
+2. Edit **Document Root** domain Anda, ubah dari `public_html` menjadi:
+   ```
+   public_html/public
+   ```
+3. Unggah seluruh isi repositori ke folder `public_html`.
+4. Dengan cara ini, folder `app/`, `config/`, `storage/` berada di luar akses web publik (keamanan standar enterprise).
+
+#### Opsi 2 (Upload Langsung ke Root `public_html`):
+1. Ekstrak seluruh isi repositori langsung ke dalam `public_html`.
+2. Repositori telah dilengkapi dengan file `.htaccess` di root yang otomatis meneruskan pengunjung ke folder `public/` secara transparan tanpa mengubah URL.
+3. Direktori `app/`, `config/`, dan `storage/` sudah diproteksi dengan `.htaccess` (`Require all denied`).
+
+---
+
+### ⚠️ Solusi Kendala Populer di cPanel:
+
+#### 1. Masalah "500 Internal Server Error" / "could not find driver"
+- **Penyebab**: Modul driver SQLite belum dicentang di konfigurasi PHP hosting.
+- **Solusi**:
+  1. Di cPanel, cari dan buka menu **Select PHP Version** (atau **MultiPHP INI Editor**).
+  2. Klik tab **Extensions**.
+  3. Beri tanda centang pada modul:
+     - `pdo_sqlite`
+     - `sqlite3`
+     - `zip`
+     - `gd`
+     - `fileinfo`
+     - `mbstring`
+  4. Simpan perubahan dan muat ulang halaman.
+
+#### 2. Masalah "unable to open database file" atau "readonly database"
+- **Penyebab**: SQLite membutuhkan hak akses tulis pada *folder* tempat database berada untuk membuat file transaksi WAL (`-wal` dan `-shm`).
+- **Solusi**:
+  1. Buka cPanel **File Manager**.
+  2. Masuk ke folder `storage/`.
+  3. Klik kanan pada folder `database`, pilih **Change Permissions**, centang Write permissions (**775** atau **777**).
+  4. Lakukan hal yang sama untuk folder `storage/documents`, `storage/backups`, `storage/logs`, dan `storage/sessions`.
+
+#### 3. Masalah "404 Not Found" Saat Membuka Halaman
+- **Penyebab**: Fitur Apache `mod_rewrite` belum aktif atau file `.htaccess` tidak terunggah (karena berawalan titik / hidden file).
+- **Solusi**:
+  1. Di cPanel File Manager, klik ikon **Settings** di pojok kanan atas, beri tanda centang pada **Show Hidden Files (dotfiles)**.
+  2. Pastikan file `.htaccess` ada di root folder aplikasi.
+

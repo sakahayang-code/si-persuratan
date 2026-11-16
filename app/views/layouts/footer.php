@@ -18,8 +18,8 @@ if (!defined('APP_INIT')) exit;
 <?php require_once APP_PATH . '/views/layouts/mobile_nav.php'; ?>
 
 <!-- Bootstrap Bundle JS & Offline Sync JS -->
-<script src="/assets/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/offline-sync.js"></script>
+<script src="<?= url('assets/js/bootstrap.bundle.min.js') ?>"></script>
+<script src="<?= url('assets/js/offline-sync.js') ?>"></script>
 <script>
     // Initialize Lucide Icons
     if (typeof lucide !== 'undefined') {

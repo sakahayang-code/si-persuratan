@@ -1,0 +1,38 @@
+# SI-PERSURATAN - Apache / cPanel Configuration
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Protect Sensitive Directories & Files from direct HTTP access
+    RewriteRule ^(app|config|migrations|storage|docs|vendor) - [F,L,NC]
+    RewriteRule ^composer\.(json|lock) - [F,L,NC]
+    RewriteRule ^\.git - [F,L,NC]
+    RewriteRule ^\.env - [F,L,NC]
+
+    # 2. If already requesting public/, do nothing
+    RewriteCond %{REQUEST_URI} ^/public/ [NC]
+    RewriteRule ^ - [L]
+
+    # 3. Route check.php directly if present in public/
+    RewriteRule ^check\.php$ public/check.php [L,QSA]
+
+    # 4. Route all other requests to public folder
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
+
+    # 5. Default root request to public/
+    RewriteRule ^$ public/ [L,QSA]
+</IfModule>
+
+# Security: Disable directory listing
+Options -Indexes
+
+# UTF-8 Encoding default
+AddDefaultCharset UTF-8
+
+# PHP Upload & Memory limits (for servers supporting php_value)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 32M
+    php_value post_max_size 32M
+    php_value memory_limit 256M
+</IfModule>

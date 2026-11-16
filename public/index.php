@@ -4,8 +4,8 @@
 require_once __DIR__ . '/../config/app.php';
 
 if (Auth::check()) {
-    header('Location: /dashboard.php');
+    header('Location: ' . url('dashboard.php'));
 } else {
-    header('Location: /login.php');
+    header('Location: ' . url('login.php'));
 }
 exit;
