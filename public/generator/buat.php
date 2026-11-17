@@ -25,9 +25,9 @@ $autoAgenda = Numbering::generateAgendaNumber('keluar');
 $sampleNomor = Numbering::generateNextNumber('005', $template['format_nomor']);
 
 $errors = [];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
-        $errors[] = 'Token tidak valid.';
+        $errors[] = 'Token keamanan tidak valid. Silakan muat ulang halaman.';
     }
 
     $tujuan = trim($_POST['tujuan'] ?? '');
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $suratId = SuratKeluar::create([
-                'nomor_agenda' => $_POST['nomor_agenda'] ?? $autoAgenda,
+                'nomor_agenda' => !empty($_POST['nomor_agenda']) ? $_POST['nomor_agenda'] : $autoAgenda,
                 'nomor_surat' => $nomorSurat,
                 'tanggal_surat' => $tglSurat,
                 'tujuan' => $tujuan,
@@ -97,7 +97,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     </div>
 <?php endif; ?>
 
-<form action="<?= url('generator/buat.php?id=' . $templateId) ?>" method="POST" id="formGenerator">
+<form action="" method="POST" id="formGenerator">
     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
     <div class="row g-4">

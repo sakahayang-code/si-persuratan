@@ -44,7 +44,7 @@ INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES
 
 -- Pimpinan
 INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES
-(3, 1), (3, 5), (3, 9), (3, 10), (3, 11), (3, 13), (3, 14), (3, 17);
+(3, 1), (3, 5), (3, 6), (3, 9), (3, 10), (3, 11), (3, 13), (3, 14), (3, 15), (3, 17);
 
 -- Sekretaris
 INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES
@@ -56,7 +56,7 @@ INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES
 
 -- Pegawai
 INSERT OR IGNORE INTO role_permissions (role_id, permission_id) VALUES
-(6, 1), (6, 5), (6, 10), (6, 12), (6, 14);
+(6, 1), (6, 5), (6, 6), (6, 10), (6, 12), (6, 14), (6, 15);
 
 -- 4. Initial Users (Password: admin123)
 INSERT OR IGNORE INTO users (id, username, email, password_hash, full_name, nip, jabatan, phone, role_id, is_active) VALUES

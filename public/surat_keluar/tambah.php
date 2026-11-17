@@ -14,17 +14,17 @@ $pejabatList = Pejabat::findActive();
 $autoAgenda = Numbering::generateAgendaNumber('keluar');
 
 $errors = [];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
-        $errors[] = 'Token keamanan tidak valid.';
+        $errors[] = 'Token keamanan tidak valid. Silakan muat ulang halaman.';
     }
 
     $tujuan = trim($_POST['tujuan'] ?? '');
     $perihal = trim($_POST['perihal'] ?? '');
-    $tglSurat = $_POST['tanggal_surat'] ?? date('Y-m-d');
+    $tglSurat = !empty($_POST['tanggal_surat']) ? $_POST['tanggal_surat'] : date('Y-m-d');
     $klasifikasiId = !empty($_POST['klasifikasi_id']) ? (int)$_POST['klasifikasi_id'] : null;
     $pejabatId = !empty($_POST['pejabat_id']) ? (int)$_POST['pejabat_id'] : null;
-    $status = $_POST['submit_action'] === 'submit_approval' ? 'menunggu_persetujuan' : 'draft';
+    $status = (isset($_POST['submit_action']) && $_POST['submit_action'] === 'submit_approval') ? 'menunggu_persetujuan' : 'draft';
 
     if (empty($tujuan) || empty($perihal)) {
         $errors[] = 'Tujuan surat dan perihal wajib diisi.';
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         try {
             $id = SuratKeluar::create([
-                'nomor_agenda' => $_POST['nomor_agenda'] ?? $autoAgenda,
+                'nomor_agenda' => !empty($_POST['nomor_agenda']) ? $_POST['nomor_agenda'] : $autoAgenda,
                 'nomor_surat' => $nomorSurat,
                 'tanggal_surat' => $tglSurat,
                 'tujuan' => $tujuan,
@@ -90,7 +90,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
 <div class="card border-0 shadow-sm rounded-3">
     <div class="card-body p-4">
-        <form action="<?= url('surat_keluar/tambah.php') ?>" method="POST">
+        <form action="" method="POST">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="row g-3">
@@ -125,8 +125,9 @@ require_once APP_PATH . '/views/layouts/header.php';
                 <div class="col-12 col-md-4">
                     <label class="form-label small fw-bold text-secondary">Pejabat Penandatangan <span class="text-danger">*</span></label>
                     <select name="pejabat_id" class="form-select" required>
+                        <option value="">-- Pilih Pejabat Penandatangan --</option>
                         <?php foreach ($pejabatList as $p): ?>
-                            <option value="<?= $p['id'] ?>">
+                            <option value="<?= $p['id'] ?>" <?= ((isset($_POST['pejabat_id']) && $_POST['pejabat_id'] == $p['id']) || count($pejabatList) === 1) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($p['nama'] . ' (' . $p['jabatan'] . ')') ?>
                             </option>
                         <?php endforeach; ?>

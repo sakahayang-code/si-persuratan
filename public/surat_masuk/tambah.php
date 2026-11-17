@@ -13,7 +13,7 @@ $klasifikasiList = Klasifikasi::getAll();
 $autoAgenda = Numbering::generateAgendaNumber('masuk');
 
 $errors = [];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $csrf = $_POST['csrf_token'] ?? '';
     if (!Auth::verifyCsrf($csrf)) {
         $errors[] = 'Token keamanan tidak valid. Silakan coba lagi.';
@@ -106,7 +106,7 @@ require_once APP_PATH . '/views/layouts/header.php';
 
 <div class="card border-0 shadow-sm rounded-3">
     <div class="card-body p-4">
-        <form action="<?= url('surat_masuk/tambah.php') ?>" method="POST" enctype="multipart/form-data" id="formSuratMasuk">
+        <form action="" method="POST" enctype="multipart/form-data" id="formSuratMasuk">
             <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
             <div class="row g-3">

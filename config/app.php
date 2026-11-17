@@ -30,24 +30,32 @@ if (!defined('BASE_URL')) {
     if (getenv('APP_BASE_URL') !== false && getenv('APP_BASE_URL') !== '') {
         define('BASE_URL', rtrim(getenv('APP_BASE_URL'), '/'));
     } else {
-        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-        $scriptDir = dirname($scriptName);
-        $scriptDir = str_replace('\\', '/', $scriptDir);
-        // Strip trailing /public if present
-        $scriptDir = preg_replace('/\/public$/', '', $scriptDir);
-        $baseUrl = ($scriptDir === '/' || $scriptDir === '.' || empty($scriptDir)) ? '' : rtrim($scriptDir, '/');
+        $baseUrl = '';
+        $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+        $requestUri = str_replace('\\', '/', $_SERVER['REQUEST_URI'] ?? '');
+        $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? ''), '/');
+        $basePath = rtrim(str_replace('\\', '/', BASE_PATH), '/');
 
-        // Fallback: check REQUEST_URI if SCRIPT_NAME didn't capture the subfolder
-        if (empty($baseUrl) && isset($_SERVER['REQUEST_URI'])) {
-            $uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '';
-            if (preg_match('#^/([^/]+)#', $uriPath, $m) && $m[1] !== 'public') {
-                $candidate = '/' . $m[1];
-                if ((isset($_SERVER['DOCUMENT_ROOT']) && is_dir($_SERVER['DOCUMENT_ROOT'] . $candidate))
-                    || basename(BASE_PATH) === $m[1]) {
-                    $baseUrl = $candidate;
-                }
+        // 1. Calculate project root relative to domain
+        $projectRoot = '';
+        if (preg_match('#^(.*?)/public(/|$)#', $scriptName, $m)) {
+            $projectRoot = rtrim($m[1], '/');
+        } elseif (!empty($docRoot) && str_starts_with($basePath, $docRoot)) {
+            $projectRoot = rtrim(substr($basePath, strlen($docRoot)), '/');
+        } elseif (preg_match('#^/([^/]+)#', $requestUri, $m) && $m[1] !== 'public') {
+            $candidate = '/' . $m[1];
+            if (basename(BASE_PATH) === $m[1] || (!empty($docRoot) && is_dir($docRoot . $candidate))) {
+                $projectRoot = $candidate;
             }
         }
+
+        // 2. Check if client URL explicitly contains /public/ in REQUEST_URI
+        if (str_contains($requestUri, '/public/') || str_ends_with($requestUri, '/public')) {
+            $baseUrl = $projectRoot . '/public';
+        } else {
+            $baseUrl = $projectRoot;
+        }
+
         define('BASE_URL', $baseUrl);
     }
 }

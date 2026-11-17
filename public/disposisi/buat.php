@@ -15,9 +15,9 @@ $surat = $suratId ? SuratMasuk::findById($suratId) : null;
 $users = User::getAll();
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if (!Auth::verifyCsrf($_POST['csrf_token'] ?? '')) {
-        $errors[] = 'Token keamanan tidak valid.';
+        $errors[] = 'Token keamanan tidak valid. Silakan coba lagi.';
     }
 
     $targetSuratId = (int)($_POST['surat_masuk_id'] ?? $suratId);
@@ -82,7 +82,7 @@ require_once APP_PATH . '/views/layouts/header.php';
     <div class="col-12 col-lg-8">
         <div class="card border-0 shadow-sm rounded-3">
             <div class="card-body p-4">
-                <form action="<?= url('disposisi/buat.php' . ($suratId ? '?surat_id=' . $suratId : '')) ?>" method="POST" id="formDisposisi">
+                <form action="" method="POST" id="formDisposisi">
                     <input type="hidden" name="csrf_token" value="<?= Auth::csrfToken() ?>">
 
                     <!-- Surat Reference -->
